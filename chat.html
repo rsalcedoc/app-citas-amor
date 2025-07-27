@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Privado - Mi Aplicación de Citas</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="home.html" class="logo">Mi App de Citas</a>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Inicio</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Servicios <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="buscar-pareja.html">Buscar Pareja</a>
+                            <a href="mi-perfil.html">Mi Perfil</a>
+                            <a href="galeria-compartida.html">Galería Compartida</a>
+                            <a href="chat.html">Chat</a>
+                            <a href="llamada-voz.html">Llamada de Voz</a>
+                            <a href="videollamada.html">Videollamada</a>
+                            <a href="cartas-amor.html">Cartas de Amor</a>
+                            <a href="regalos-virtuales.html">Regalos Virtuales</a>
+                            <a href="minijuegos-parejas.html">Minijuegos para Parejas</a>
+                            <a href="test-compatibilidad.html">Test de Compatibilidad</a>
+                        </div>
+                    </li>
+                    <li><a href="configuracion.html">Configuración</a></li>
+                    <li><a href="#" id="logout">Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="chat-main-content">
+        <div class="container chat-container">
+            <h1>Chat Privado</h1>
+
+            <div class="chat-interface">
+                <div class="chat-sidebar">
+                    <h2>Conversaciones</h2>
+                    <div id="friendList" class="friend-list">
+                        <p class="loading-message">Cargando amigos...</p>
+                    </div>
+                </div>
+
+                <div class="chat-area">
+                    <div class="chat-header">
+                        <img id="chatRecipientAvatar" src="https://via.placeholder.com/50" alt="Avatar del Destinatario" class="chat-recipient-avatar">
+                        <span id="chatRecipientName" class="chat-recipient-name">Selecciona un amigo para chatear</span>
+                        <div class="chat-header-actions">
+                            </div>
+                    </div>
+
+                    <div id="messagesDisplay" class="messages-display">
+                        <p class="no-messages-message">Inicia una conversación seleccionando un amigo.</p>
+                    </div>
+
+                    <div class="message-input-area">
+                        <textarea id="messageInput" placeholder="Escribe tu mensaje..." rows="3"></textarea>
+                        <button id="sendMessageButton"><i class="fas fa-paper-plane"></i> Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Mi Aplicación de Citas. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="scripts/supabase.js"></script>
+    <script type="module" src="scripts/chat.js"></script>
+</body>
+</html>

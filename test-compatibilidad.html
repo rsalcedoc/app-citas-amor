@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Test de Compatibilidad</title>
+    <link rel="stylesheet" href="styles/test-compatibilidad.css" />
+</head>
+<body>
+    <header>
+        <h1>Test de Compatibilidad</h1>
+        <p>Responde las preguntas para conocer tu compatibilidad con otra persona</p>
+    </header>
+    <main class="test-container">
+        <form id="compatibilityForm">
+            <div class="question">
+                <label>¿Cuál es tu plan ideal para un fin de semana?</label>
+                <select name="q1" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="A">Quedar en casa viendo películas</option>
+                    <option value="B">Salir a una fiesta o evento social</option>
+                    <option value="C">Hacer actividades al aire libre</option>
+                </select>
+            </div>
+
+            <div class="question">
+                <label>¿Qué tipo de música prefieres?</label>
+                <select name="q2" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="A">Música tranquila y relajante</option>
+                    <option value="B">Música animada y bailable</option>
+                    <option value="C">Mezcla de varios estilos</option>
+                </select>
+            </div>
+
+            <div class="question">
+                <label>¿Cómo te gusta pasar las vacaciones?</label>
+                <select name="q3" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="A">En la playa descansando</option>
+                    <option value="B">Explorando ciudades y cultura</option>
+                    <option value="C">Aventuras y deportes extremos</option>
+                </select>
+            </div>
+
+            <div class="question">
+                <label>¿Qué valoras más en una relación?</label>
+                <select name="q4" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="A">Confianza y comunicación</option>
+                    <option value="B">Diversión y espontaneidad</option>
+                    <option value="C">Apoyo y crecimiento mutuo</option>
+                </select>
+            </div>
+
+            <button type="submit">Ver Resultado</button>
+        </form>
+
+        <section id="result" class="result-section" hidden>
+            <h2>Resultado de tu compatibilidad</h2>
+            <p id="resultText"></p>
+            <button id="resetBtn">Hacer otra prueba</button>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById('compatibilityForm');
+        const resultSection = document.getElementById('result');
+        const resultText = document.getElementById('resultText');
+        const resetBtn = document.getElementById('resetBtn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            let scoreA = 0, scoreB = 0, scoreC = 0;
+
+            for (const value of formData.values()) {
+                if (value === 'A') scoreA++;
+                else if (value === 'B') scoreB++;
+                else if (value === 'C') scoreC++;
+            }
+
+            let maxScore = Math.max(scoreA, scoreB, scoreC);
+            let compatibilityType = '';
+
+            if (maxScore === scoreA) compatibilityType = 'Eres una persona tranquila y reflexiva, valoras la estabilidad y la comunicación.';
+            else if (maxScore === scoreB) compatibilityType = 'Eres una persona social y divertida, te gusta la espontaneidad y la aventura.';
+            else compatibilityType = 'Eres una persona activa y enérgica, buscas crecimiento y apoyo mutuo en las relaciones.';
+
+            resultText.textContent = compatibilityType;
+            resultSection.hidden = false;
+            form.style.display = 'none';
+        });
+
+        resetBtn.addEventListener('click', () => {
+            form.reset();
+            resultSection.hidden = true;
+            form.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

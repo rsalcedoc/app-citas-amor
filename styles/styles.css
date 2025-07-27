@@ -1,0 +1,413 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenedor general */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  background: #fff0f6;
+  padding: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 2rem;
+  color: #ff3864;
+  font-weight: 700;
+  user-select: none;
+}
+
+/* Botones comunes */
+.btn {
+  cursor: pointer;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0.7rem 1.8rem;
+  font-size: 1rem;
+  user-select: none;
+}
+
+/* Botones específicos */
+.btn-primary {
+  background-color: #ff3864;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #e02e57;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #ff3864;
+  color: #ff3864;
+  margin-left: 1rem;
+}
+
+.btn-secondary:hover {
+  background-color: #ff3864;
+  color: white;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #fff;
+  color: white;
+}
+
+.btn-outline:hover {
+  background: white;
+  color: #ff3864;
+}
+
+.btn-lg {
+  font-size: 1.25rem;
+  padding: 1rem 2.5rem;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 4rem 0;
+  gap: 2rem;
+  color: white;
+  text-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.hero-text {
+  flex: 1 1 400px;
+}
+
+.hero-text h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: fadeInDown 1s ease forwards;
+}
+
+.hero-text p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+.hero-buttons .btn {
+  margin-right: 1rem;
+  animation: fadeInUp 2s ease forwards;
+}
+
+/* Imagen Hero */
+.hero-image {
+  flex: 1 1 400px;
+  
+  height: 450px;
+  display: flex;
+  justify-content: center;
+  animation: bounce 3s infinite;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 30px;
+  box-shadow: 0 15px 40px rgba(255, 56, 100, 0.4);
+}
+
+/* Footer */
+footer {
+  background: #fff0f6;
+  text-align: center;
+  padding: 1rem 0;
+  color: #ff3864;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+/* Animaciones */
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  .hero-buttons .btn {
+    margin: 0.5rem 0;
+  }
+}
+
+/* Estilos para modales */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed; 
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+  position: relative;
+  color: #333;
+}
+
+.close {
+  position: absolute;
+  top: 15px; right: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff3864;
+  cursor: pointer;
+  user-select: none;
+}
+
+.modal-content h2 {
+  margin-bottom: 1rem;
+  color: #ff3864;
+}
+
+.modal-content label {
+  display: block;
+  margin: 0.8rem 0 0.2rem;
+  font-weight: 600;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.modal-content input:focus {
+  border-color: #ff3864;
+  outline: none;
+}
+
+
+
+
+
+
+
+/* Fondo del modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+}
+
+/* Botón cerrar */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Título */
+.modal-content h2 {
+  margin: 0 0 20px 0;
+  font-weight: 700;
+  color: #222;
+  text-align: center;
+}
+
+/* Labels */
+.modal-content label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+/* Inputs */
+.modal-content input[type="text"],
+.modal-content input[type="password"] {
+  padding: 12px 15px;
+  border: 1.8px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="password"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 8px #007bffaa;
+}
+
+/* Botón Entrar */
+.modal-content .btn-primary {
+  background-color: #007bff;
+  color: white;
+  padding: 14px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.modal-content .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 90%;
+    padding: 25px 20px;
+  }
+}
+
+
+    /* Pequeños estilos para ocultar y mostrar elementos */
+    .hidden { display: none; }
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none; /* oculto por defecto */
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: white; padding: 20px; border-radius: 8px; width: 300px; max-width: 90%;
+      position: relative;
+    }
+    .close {
+      position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;
+    }
+    /* Estilos básicos para usuarios y chat */
+    #users-list .user {
+      padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;
+    }
+    #users-list .user:hover {
+      background-color: #eee;
+    }
+    #chat-box {
+      border: 1px solid #ccc; padding: 10px; margin-top: 20px;
+      max-height: 300px; overflow-y: auto;
+      background: #f9f9f9;
+    }
+    #messages .message {
+      padding: 5px 10px; margin: 5px 0; border-radius: 10px;
+      max-width: 70%;
+      clear: both;
+    }
+    #messages .own {
+      background-color: #d1ffd6; float: right;
+    }
+    #messages .message:not(.own) {
+      background-color: #fff; float: left;
+    }
+  
+    

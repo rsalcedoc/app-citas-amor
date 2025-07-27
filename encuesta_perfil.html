@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Encuesta de Perfil - LoveHub</title>
+  <link rel="stylesheet" href="styles/encuesta.css" />
+</head>
+<body>
+  <div class="encuesta-container">
+    <h1>🎯 Personaliza tu experiencia</h1>
+    <form id="encuestaForm">
+      <label>Edad: <input type="number" id="edad" min="18" required /></label>
+      <label>Sexo:
+        <select id="sexo" required>
+          <option value="">Selecciona...</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </label>
+      <label>¿Qué te interesa? (puedes elegir varios):<br>
+        <input type="checkbox" value="Hombres" /> Hombres
+        <input type="checkbox" value="Mujeres" /> Mujeres
+        <input type="checkbox" value="Ambos" /> Ambos
+      </label>
+      <label>Gustos: <input type="text" id="gustos" placeholder="Ej: Música, cine, libros" /></label>
+      <label>Deportes favoritos: <input type="text" id="deportes" /></label>
+
+      <button type="submit">Guardar y continuar ✅</button>
+    </form>
+  </div>
+
+  <script type="module" src="scripts/encuesta_perfil.js"></script>
+</body>
+</html>

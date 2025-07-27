@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(145deg, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+h1 {
+  color: #d6336c;
+  margin-bottom: 25px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #d6336c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a0264d;
+}
+
+.google-btn {
+  background: #4285f4;
+}
+
+.google-btn:hover {
+  background: #3367d6;
+}
+
+.small {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.switch, .recover {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+a {
+  color: #d6336c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

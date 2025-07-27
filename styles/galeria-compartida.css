@@ -1,0 +1,330 @@
+/* Importa estilos globales si es necesario, o asegúrate de que el banner está estilizado en main_styles.css */
+/* @import url('styles/main_styles.css'); */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* Degradado suave */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Estilos del Banner (si no están en main_styles.css) --- */
+.main-header {
+    background-color: #4a90e2; /* Color principal del banner */
+    padding: 15px 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li {
+    position: relative;
+    margin-left: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #a7d9ff; /* Un tono más claro al pasar el ratón */
+}
+
+/* Dropdown Styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #3a7bc8; /* Fondo del dropdown */
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    top: 100%; /* Posiciona debajo del botón */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #2a6bb8; /* Color al pasar el ratón por los ítems */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+/* --- Fin Estilos del Banner --- */
+
+.gallery-page-container {
+    flex-grow: 1;
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gallery-hero {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.gallery-hero h1 {
+    font-size: 3.5rem;
+    color: #4a90e2;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.gallery-hero p {
+    font-size: 1.4rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.upload-button {
+    background-color: #5cb85c; /* Verde para subir */
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 5px 15px rgba(92, 184, 92, 0.3);
+}
+
+.upload-button:hover {
+    background-color: #4cae4c;
+    transform: translateY(-3px);
+}
+
+.upload-button i {
+    font-size: 1.3rem;
+}
+
+.primary-button {
+    background-color: #4a90e2; /* Azul para confirmar */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+}
+
+.primary-button:hover {
+    background-color: #357bd8;
+    transform: translateY(-2px);
+}
+
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    opacity: 0; /* Para animación de entrada */
+    transform: translateY(20px); /* Para animación de entrada */
+    animation: fadeInUp 0.5s forwards; /* Aplicado por JS con delay */
+}
+
+.photo-card:hover {
+    transform: translateY(-5px) scale(1.03); /* Ligeramente más dramático */
+    box-shadow: 0 18px 30px rgba(74, 144, 226, 0.4);
+}
+
+.photo-card img {
+    width: 100%;
+    height: 250px; /* Un poco más grandes */
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #eee;
+    transition: transform 0.5s ease;
+}
+
+.photo-card:hover img {
+    transform: scale(1.08); /* Efecto zoom al pasar el ratón */
+}
+
+.photo-card .photo-details {
+    padding: 18px 25px;
+    font-size: 1.15rem;
+    color: #444;
+    text-align: center;
+    flex-grow: 1; /* Para que el texto ocupe espacio si hay variaciones */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.photo-card .photo-details .photo-caption {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.photo-card .photo-details .uploaded-by {
+    font-size: 0.95rem;
+    color: #777;
+}
+
+/* Spinner de carga */
+.loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #4a90e2;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
+    display: none; /* Oculto por defecto, JS lo muestra */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animaciones generales */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .gallery-hero h1 {
+        font-size: 2.5rem;
+    }
+    .gallery-hero p {
+        font-size: 1.1rem;
+    }
+    .photo-card img {
+        height: 180px;
+    }
+    .photo-card .photo-details {
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 15px;
+    }
+    .nav-links li {
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 10px;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    header p {
+        font-size: 1rem;
+    }
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    .upload-button {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+}

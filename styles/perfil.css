@@ -1,0 +1,127 @@
+body {
+    font-family: 'Poppins', sans-serif; /* Consistencia con el chat */
+    background: linear-gradient(120deg, #e0f2f7, #f0f8ff); /* Degradado suave, armoniza con el chat */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Usa min-height para que el contenido no se corte */
+    margin: 0;
+    padding: 20px; /* Padding para evitar que el contenedor toque los bordes */
+    box-sizing: border-box;
+}
+
+.form-container {
+    background: white;
+    padding: 40px; /* Más padding para espacio */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+    width: 100%;
+    max-width: 450px; /* Ligeramente más ancho */
+    text-align: center;
+    border: 1px solid #e0e0e0; /* Borde sutil */
+}
+
+h1 {
+    color: #6a0dad; /* Morado oscuro, igual que encabezados del chat */
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 2em;
+}
+
+.auth-status {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: 500;
+    color: #333;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+}
+
+input, textarea {
+    width: calc(100% - 24px); /* Ajuste para padding */
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d0d0d0; /* Borde más suave */
+    box-sizing: border-box;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #7b1fa2; /* Morado al enfocar */
+    box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2); /* Sombra de enfoque */
+    outline: none;
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar verticalmente */
+    min-height: 80px;
+}
+
+button {
+    background: #6a0dad; /* Morado, consistencia con el chat */
+    color: white;
+    border: none;
+    padding: 14px 25px; /* Más padding */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(106, 13, 173, 0.2);
+}
+
+button:hover {
+    background: #7b1fa2; /* Morado más oscuro al pasar el ratón */
+    transform: translateY(-2px); /* Efecto ligero de levantamiento */
+}
+
+.message {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95em;
+    opacity: 0; /* Oculto por defecto */
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.message.success {
+    background-color: #e6ffe6; /* Verde claro */
+    color: #28a745; /* Verde oscuro */
+    border: 1px solid #28a745;
+}
+
+.message.error {
+    background-color: #ffe6e6; /* Rojo claro */
+    color: #dc3545; /* Rojo oscuro */
+    border: 1px solid #dc3545;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 25px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}

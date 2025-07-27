@@ -1,0 +1,31 @@
+<!-- videollamada.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Videollamada</title>
+  <link rel="stylesheet" href="styles/Videollamada.css" />
+</head>
+<body>
+  <header>
+    <h1>Videollamada</h1>
+  </header>
+
+  <main class="video-call-container">
+    <div class="video-box local">
+      <video autoplay muted></video>
+      <p>Tú</p>
+    </div>
+    <div class="video-box remote">
+      <video autoplay></video>
+      <p>Pareja</p>
+    </div>
+    <div class="controls">
+      <button class="btn end-call">Finalizar</button>
+      <button class="btn mute">Silenciar</button>
+      <button class="btn cam-toggle">Apagar cámara</button>
+    </div>
+  </main>
+</body>
+</html>

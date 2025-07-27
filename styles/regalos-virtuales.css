@@ -1,0 +1,88 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffedf0;
+    margin: 0;
+    padding: 40px 20px;
+    color: #3a2a2a;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #d6336c;
+    margin-bottom: 8px;
+    font-weight: 900;
+}
+
+header p {
+    font-size: 1.25rem;
+    color: #5c3a4d;
+    font-style: italic;
+}
+
+.gift-container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.gifts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.gift-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(214, 51, 108, 0.3);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    outline: none;
+}
+
+.gift-card:hover,
+.gift-card:focus {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(214, 51, 108, 0.5);
+}
+
+.gift-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.gift-card h3 {
+    font-size: 1.5rem;
+    color: #a32455;
+    margin-bottom: 10px;
+}
+
+.gift-card p {
+    font-size: 1rem;
+    color: #6a465e;
+    margin-bottom: 20px;
+}
+
+.gift-card button {
+    background-color: #d6336c;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.gift-card button:hover {
+    background-color: #a32455;
+}

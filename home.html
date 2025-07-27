@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Inicio - Tu Plataforma Romántica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/home.css" />
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <a href="home.html" class="logo">💖 Amor Sin Fronteras 💖</a>
+        </div>
+        <nav class="main-nav">
+            <div class="dropdown">
+                <button class="dropbtn">Servicios <i class="fas fa-caret-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="buscar-pareja.html"><i class="fas fa-heartbeat"></i> Buscar Parejas</a>
+                    <a href="chat.html"><i class="fas fa-comments"></i> Chat</a>
+                    <a href="llamada-voz.html"><i class="fas fa-phone-alt"></i> Llamadas de voz</a>
+                    <a href="Videollamada.Html"><i class="fas fa-video"></i> Videollamadas</a>
+                    <a href="cartas-amor.html"><i class="fas fa-envelope-open-text"></i> Cartas de amor</a>
+                    <a href="galeria-compartida.html"><i class="fas fa-images"></i> Galería compartida</a>
+                    <a href="explorar-personas.html"><i class="fas fa-globe"></i> Explorar personas</a>
+                    <a href="test-compatibilidad.html"><i class="fas fa-brain"></i> Test de compatibilidad</a>
+                    <a href="regalos-virtuales.html"><i class="fas fa-gift"></i> Regalos virtuales</a>
+                    <a href="minijuegos-parejas.html"><i class="fas fa-gamepad"></i> Minijuegos en pareja</a>
+                    <a href="mi-perfil.html"><i class="fas fa-user-circle"></i> Mi perfil</a>
+                </div>
+            </div>
+            <a href="configuracion.html" class="icon-link" title="Configuración"><i class="fas fa-cog"></i></a>
+        </nav>
+        <div class="header-right">
+            <div class="social-icons">
+                <a href="mi-perfil.html" title="Mi Perfil"><i class="fas fa-user-circle"></i></a>
+                <a href="https://www.youtube.com/" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com/" target="_blank" title="X (Twitter)"><i class="fab fa-twitter"></i></a>
+            </div>
+            <button id="logout" class="icon-button" title="Cerrar Sesión"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </header>
+
+    <main class="main-content-grid">
+        <section class="posts-section">
+            <div class="create-post">
+                <textarea id="postContent" placeholder="¿Qué tienes en mente hoy?"></textarea>
+                <button id="publishPost"><i class="fas fa-paper-plane"></i> Publicar</button>
+            </div>
+            <div id="postsFeed" class="posts-feed">
+                <p class="loading-message">Cargando publicaciones...</p>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <section class="friend-requests">
+                <h2><i class="fas fa-user-plus"></i> Solicitudes de Amistad</h2>
+                <div id="friendRequestsList" class="requests-list">
+                    <p class="no-requests-message">No hay solicitudes pendientes.</p>
+                </div>
+            </section>
+
+            <section class="people-suggestions">
+                <h2><i class="fas fa-users"></i> Sugerencias para Ti</h2>
+                <div id="peopleSuggestionsList" class="suggestions-list">
+                    <p class="no-suggestions-message">No hay sugerencias por ahora.</p>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <footer>
+        <p>© 2025 Amor Sin Fronteras. Todos los derechos reservados 💘</p>
+    </footer>
+
+    <script type="module" src="scripts/home.js"></script>
+</body>
+</html>

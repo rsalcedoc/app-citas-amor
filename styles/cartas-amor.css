@@ -1,0 +1,476 @@
+/* Importa estilos globales si es necesario, o asegura que el banner está estilizado en main_styles.css */
+/* @import url('styles/main_styles.css'); */
+
+body {
+    font-family: 'Playfair Display', serif; /* Fuente más elegante */
+    background: linear-gradient(135deg, #fceabb, #f8b5a7); /* Degradado suave y cálido */
+    margin: 0;
+    padding: 0;
+    color: #5a3e3e; /* Tono cálido de marrón */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Estilos del Banner (si no están en main_styles.css) --- */
+/* (Copia y pega aquí los estilos del banner que te di para galeria_compartida.css si main_styles.css no los cubre) */
+.main-header {
+    background-color: #e91e63; /* Rosa más intenso para el banner */
+    padding: 15px 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li {
+    position: relative;
+    margin-left: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ffb3c1; /* Tono más claro al pasar el ratón */
+}
+
+/* Dropdown Styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #d81b60; /* Fondo del dropdown */
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    top: 100%; /* Posiciona debajo del botón */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #c2185b; /* Color al pasar el ratón por los ítems */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+/* --- Fin Estilos del Banner --- */
+
+.love-letters-page-container {
+    flex-grow: 1;
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.letters-hero {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.letters-hero h1 {
+    font-family: 'Sacramento', cursive; /* Fuente manuscrita */
+    font-size: 4.5rem;
+    color: #e91e63; /* Rosa vibrante */
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 6px rgba(233, 30, 99, 0.4);
+}
+
+.letters-hero p {
+    font-size: 1.5rem;
+    color: #777;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+.compose-button {
+    background-color: #e91e63; /* Rosa para el botón */
+    color: white;
+    padding: 15px 35px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+}
+
+.compose-button:hover {
+    background-color: #d81b60;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(233, 30, 99, 0.4);
+}
+
+.compose-button i {
+    font-size: 1.4rem;
+}
+
+.letters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.letter-card {
+    background: #fff8f8; /* Fondo blanco rosado */
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 30px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+    cursor: pointer;
+    opacity: 0; /* Para animación de entrada */
+    transform: translateY(30px); /* Para animación de entrada */
+    position: relative; /* Para el efecto de "carta" */
+    overflow: hidden; /* Para asegurar que el pseudo-elemento no se desborde */
+}
+
+/* Efecto de borde de pergamino/carta */
+.letter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid #f0b2aa; /* Borde rosado pálido */
+    border-radius: 20px;
+    pointer-events: none; /* Asegura que no interfiera con los eventos del mouse */
+    z-index: 1;
+    transition: all 0.4s ease;
+}
+
+.letter-card:hover {
+    transform: translateY(-10px) rotateZ(-2deg); /* Ligeramente inclinado al pasar el ratón */
+    box-shadow: 0 15px 35px rgba(233, 30, 99, 0.4);
+}
+
+.letter-card:hover::before {
+    border-color: #e91e63; /* Color más intenso al pasar el ratón */
+}
+
+.letter-card h2 {
+    font-family: 'Dancing Script', cursive; /* Fuente cursiva para los títulos */
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #e91e63;
+    text-align: center;
+    border-bottom: 1px dashed #f0b2aa;
+    padding-bottom: 10px;
+}
+
+.letter-card p {
+    font-family: 'Lora', serif; /* Fuente legible para el contenido */
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.letter-card footer {
+    font-family: 'Homemade Apple', cursive; /* Fuente tipo manuscrita para la firma */
+    font-style: normal; /* Sobrescribe italic */
+    font-weight: 600;
+    color: #8b2e2e;
+    text-align: right;
+    font-size: 1.1rem;
+    margin-top: 15px;
+}
+
+.no-letters-message, .error-message {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #888;
+    margin-top: 50px;
+    width: 100%;
+}
+
+/* Spinner de carga */
+.loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #e91e63; /* Rosa del tema */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
+    display: none; /* Oculto por defecto, JS lo muestra */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Estilos de Modales --- */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para cubrir toda la ventana */
+    z-index: 2000; /* Z-index alto para estar encima de todo */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilita scroll si el contenido es muy largo */
+    background-color: rgba(0,0,0,0.6); /* Fondo semi-transparente oscuro */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque en el fondo */
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background-color: #fff8f8; /* Fondo de la ventana del modal */
+    margin: 5% auto; /* 5% desde arriba, centrado horizontalmente */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    width: 80%; /* Ancho de la ventana */
+    max-width: 700px; /* Ancho máximo */
+    position: relative;
+    animation: slideInTop 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.modal-content h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #e91e63;
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0b2aa;
+    padding-bottom: 15px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #e91e63;
+    text-decoration: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #5a3e3e;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: calc(100% - 20px); /* Ajusta padding */
+    padding: 12px 10px;
+    border: 1px solid #f0b2aa;
+    border-radius: 8px;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fffaf0; /* Fondo más claro */
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #e91e63;
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+    outline: none;
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar verticalmente */
+    min-height: 120px;
+}
+
+.primary-button {
+    background-color: #e91e63;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: block; /* Ocupa todo el ancho */
+    width: 100%;
+    margin-top: 25px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+}
+
+.primary-button:hover {
+    background-color: #d81b60;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+}
+
+.view-letter-meta {
+    font-size: 0.95rem;
+    color: #888;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.view-letter-meta span {
+    font-weight: bold;
+    color: #e91e63;
+}
+
+.view-letter-content {
+    background-color: #fffaf0;
+    border: 1px solid #f0b2aa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    line-height: 1.8;
+    min-height: 150px;
+    overflow-y: auto; /* Si el contenido es largo */
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInTop {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .letters-hero h1 {
+        font-size: 3.5rem;
+    }
+    .letters-hero p {
+        font-size: 1.2rem;
+    }
+    .compose-button {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+    }
+    .letter-card {
+        width: calc(100% - 40px); /* Ajuste para móviles */
+    }
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .letters-hero h1 {
+        font-size: 2.8rem;
+    }
+    .letters-hero p {
+        font-size: 1rem;
+    }
+    .letter-card {
+        padding: 20px;
+    }
+    .letter-card h2 {
+        font-size: 1.4rem;
+    }
+    .letter-card p {
+        font-size: 1rem;
+    }
+}

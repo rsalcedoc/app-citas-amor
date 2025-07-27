@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Cuánto nos conoces? - Mini Juego</title>
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="css/conocimiento.css" />
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">MI APP DE CITAS</div>
+            <ul class="nav-links">
+                <li><a href="../home.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Servicios</a>
+                    <div class="dropdown-content">
+                        <a href="../buscar-pareja.html">Buscar Pareja</a>
+                        <a href="../mi-perfil.html">Mi Perfil</a>
+                        <a href="../galeria-compartida.html">Galería Compartida</a>
+                        <a href="../chat.html">Chat</a>
+                        <a href="../Videollamada.Html">Videollamada</a>
+                        <a href="../cartas-amor.html">Cartas de Amor</a>
+                        <a href="../regalos-virtuales.html">Regalos Virtuales</a>
+                        <a href="../minijuegos-parejas.html">Mini Juegos</a>
+                        <a href="../test-compatibilidad.html">Test de Compatibilidad</a>
+                    </div>
+                </li>
+                <li><a href="../configuracion.html">Configuración</a></li>
+                <li><a href="#" id="signOut">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="game-container">
+        <section class="conocimiento-game">
+            <h1>¿Cuánto nos conoces?</h1>
+            <p class="game-intro">¡Pon a prueba cuánto sabes sobre tu pareja! Responde a las preguntas y mira si coinciden.</p>
+
+            <div id="gameArea" class="game-area">
+                <div id="questionCard" class="question-card">
+                    <p id="questionText" class="question-text"></p>
+                    <div id="optionsContainer" class="options-container">
+                        </div>
+                </div>
+                <button id="nextQuestionBtn" class="action-btn">Siguiente Pregunta</button>
+                <div id="resultDisplay" class="result-display" style="display: none;">
+                    <p id="currentScore"></p>
+                    <p id="finalMessage"></p>
+                    <button id="restartGameBtn" class="action-btn">Jugar de Nuevo</button>
+                    <button id="backToGamesBtn" class="action-btn secondary-btn">Volver a Mini Juegos</button>
+                </div>
+            </div>
+            
+            <div id="noQuestionsMessage" class="message-info" style="display: none;">
+                <p>¡No hay preguntas disponibles en este momento!</p>
+                <button id="backToGamesBtnNoQuestions" class="action-btn secondary-btn">Volver a Mini Juegos</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/conocimiento.js"></script>
+    <script src="https://kit.fontawesome.com/6aa268e922.js" crossorigin="anonymous"></script> 
+</body>
+</html>

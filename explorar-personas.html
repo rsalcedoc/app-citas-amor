@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Explorar Personas</title>
+    <link rel="stylesheet" href="styles/explorar-personas.css" />
+</head>
+<body>
+    <header>
+        <h1>Explorar Personas</h1>
+        <p>Encuentra personas según país o gustos comunes</p>
+    </header>
+    <main class="explore-container">
+        <section class="filter-section">
+            <h2>Filtrar por País</h2>
+            <select id="countrySelect">
+                <option value="">--Selecciona un país--</option>
+                <option value="colombia">Colombia</option>
+                <option value="mexico">México</option>
+                <option value="argentina">Argentina</option>
+                <option value="españa">España</option>
+                <option value="estadosunidos">Estados Unidos</option>
+            </select>
+        </section>
+
+        <section class="filter-section">
+            <h2>Filtrar por Gustos</h2>
+            <div class="tags-container">
+                <button class="tag-btn" data-tag="música">Música</button>
+                <button class="tag-btn" data-tag="cine">Cine</button>
+                <button class="tag-btn" data-tag="deportes">Deportes</button>
+                <button class="tag-btn" data-tag="viajes">Viajes</button>
+                <button class="tag-btn" data-tag="lectura">Lectura</button>
+                <button class="tag-btn" data-tag="tecnología">Tecnología</button>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <h2>Personas Encontradas</h2>
+            <div id="resultsContainer" class="results-container">
+                <p>Selecciona un país o gusto para explorar personas.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const countrySelect = document.getElementById('countrySelect');
+        const tagButtons = document.querySelectorAll('.tag-btn');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        const people = [
+            { name: 'Ana', country: 'colombia', tags: ['música', 'viajes'] },
+            { name: 'Carlos', country: 'mexico', tags: ['deportes', 'cine'] },
+            { name: 'Lucía', country: 'argentina', tags: ['lectura', 'tecnología'] },
+            { name: 'Sofía', country: 'españa', tags: ['música', 'lectura'] },
+            { name: 'Miguel', country: 'estadosunidos', tags: ['viajes', 'deportes'] },
+        ];
+
+        function renderResults(filtered) {
+            if (filtered.length === 0) {
+                resultsContainer.innerHTML = '<p>No se encontraron personas con esos criterios.</p>';
+                return;
+            }
+            resultsContainer.innerHTML = filtered.map(person => `
+                <div class="person-card">
+                    <h3>${person.name}</h3>
+                    <p><strong>País:</strong> ${person.country.charAt(0).toUpperCase() + person.country.slice(1)}</p>
+                    <p><strong>Gustos:</strong> ${person.tags.join(', ')}</p>
+                </div>
+            `).join('');
+        }
+
+        countrySelect.addEventListener('change', () => {
+            const selectedCountry = countrySelect.value;
+            if (!selectedCountry) {
+                resultsContainer.innerHTML = '<p>Selecciona un país o gusto para explorar personas.</p>';
+                return;
+            }
+            const filtered = people.filter(p => p.country === selectedCountry);
+            renderResults(filtered);
+        });
+
+        tagButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tag = btn.dataset.tag;
+                const filtered = people.filter(p => p.tags.includes(tag));
+                renderResults(filtered);
+            });
+        });
+    </script>
+</body>
+</html>

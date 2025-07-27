@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego de Memoria - Mini Juego</title>
+    <link rel="stylesheet" href="css/memoria.css" />
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">MI APP DE CITAS</div>
+            <ul class="nav-links">
+                <li><a href="../home.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Servicios</a>
+                    <div class="dropdown-content">
+                        <a href="../buscar-pareja.html">Buscar Pareja</a>
+                        <a href="../mi-perfil.html">Mi Perfil</a>
+                        <a href="../galeria-compartida.html">Galería Compartida</a>
+                        <a href="../chat.html">Chat</a>
+                        <a href="../Videollamada.Html">Videollamada</a>
+                        <a href="../cartas-amor.html">Cartas de Amor</a>
+                        <a href="../regalos-virtuales.html">Regalos Virtuales</a>
+                        <a href="../minijuegos-parejas.html">Mini Juegos</a>
+                        <a href="../test-compatibilidad.html">Test de Compatibilidad</a>
+                    </div>
+                </li>
+                <li><a href="../configuracion.html">Configuración</a></li>
+                <li><a href="#" id="signOut">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="game-container">
+        <section class="memoria-game">
+            <h1>Juego de Memoria Romántico</h1>
+            <p class="game-intro">¡Encuentra todas las parejas de cartas antes de que se acabe el tiempo!</p>
+
+            <div class="game-info">
+                <p>Intentos: <span id="attempts">0</span></p>
+                <p>Tiempo: <span id="timer">00:00</span></p>
+            </div>
+
+            <div id="gameBoard" class="game-board">
+                </div>
+
+            <div id="gameControls" class="game-controls">
+                <button id="startGameBtn" class="action-btn">Comenzar Juego</button>
+                <button id="resetGameBtn" class="action-btn secondary-btn" style="display: none;">Reiniciar</button>
+                <button id="backToGamesBtn" class="action-btn tertiary-btn">Volver a Mini Juegos</button>
+            </div>
+
+            <div id="gameOverModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h2 id="modalMessage">¡Felicidades!</h2>
+                    <p id="modalScore"></p>
+                    <button id="playAgainModalBtn" class="action-btn">Jugar de Nuevo</button>
+                    <button id="backToGamesModalBtn" class="action-btn secondary-btn">Volver a Mini Juegos</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/memoria.js"></script>
+    <script src="https://kit.fontawesome.com/6aa268e922.js" crossorigin="anonymous"></script> 
+    
+    
+</body>
+</html>

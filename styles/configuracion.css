@@ -1,0 +1,628 @@
+/* Importa fuentes si no lo haces ya en main.css */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&family=Montserrat:wght@500;700&display=swap');
+
+/* --- Estilos para el Encabezado Principal (Banner) - AHORA DENTRO DE CONFIGURACION.CSS --- */
+.main-header {
+    background: linear-gradient(to right, #673ab7, #9c27b0); /* Degradado morado/rosa */
+    color: white;
+    padding: 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Hace que el encabezado se quede arriba al hacer scroll */
+    top: 0;
+    z-index: 1000; /* Asegurar que esté encima de otros elementos */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Ancho máximo para el contenido del navbar */
+    margin: 0 auto; /* Centrar el navbar */
+    padding: 0 20px; /* Padding a los lados */
+}
+
+.logo {
+    font-family: 'Pacifico', cursive; /* Fuente romántica para el logo */
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.nav-links {
+    list-style: none; /* Quitar viñetas de la lista */
+    display: flex; /* Mostrar enlaces en fila */
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    position: relative; /* Para el dropdown */
+    margin-left: 30px; /* Espacio entre los elementos del menú */
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 8px 15px; /* Padding dentro de cada enlace */
+    transition: all 0.3s ease; /* Transición suave para hover */
+    border-radius: 5px;
+}
+
+.nav-links a:hover,
+.nav-links a.active { /* Estilo para el enlace activo o al pasar el ratón */
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco semitransparente */
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
+
+/* --- Estilos para el Dropdown (Menú desplegable de Servicios) --- */
+.dropdown {
+    position: relative;
+    display: inline-block; /* Necesario para que el dropdown funcione */
+}
+
+.dropbtn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    background-color: #f9f9f9; /* Fondo claro para el contenido del dropdown */
+    min-width: 180px; /* Ancho mínimo */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Sombra para el efecto "flotante" */
+    z-index: 1; /* Asegurar que esté encima de otros contenidos */
+    border-radius: 8px;
+    overflow: hidden; /* Para que los bordes redondeados se apliquen bien a los ítems internos */
+    left: 50%; /* Centrar el dropdown bajo el botón */
+    transform: translateX(-50%);
+    top: 100%; /* Justo debajo del botón padre */
+    margin-top: 5px; /* Pequeño espacio entre el botón y el dropdown */
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block; /* Cada enlace en su propia línea */
+    text-align: left;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-bottom: 1px solid #eee; /* Separador entre elementos */
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none; /* No border en el último elemento */
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f0f0;
+    color: #673ab7; /* Morado en hover */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Mostrar el dropdown al pasar el ratón por el padre */
+}
+
+/* --- Estilos para el botón de cerrar sesión en el banner --- */
+#signOut {
+    background-color: #f44336; /* Rojo para el botón de cerrar sesión */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    margin-left: 20px; /* Espacio a la izquierda del botón */
+    transition: background-color 0.3s ease;
+}
+
+#signOut:hover {
+    background-color: #d32f2f;
+}
+
+/* --- Estilos Generales para Botones (pueden ser reusados en otras partes) --- */
+.btn {
+    background-color: #e91e63; /* Rosa principal */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #d81b60;
+    transform: translateY(-2px);
+}
+
+/* --- Responsividad para el Banner --- */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Apilar elementos en columna */
+        align-items: flex-start; /* Alinear a la izquierda */
+        padding: 15px;
+    }
+
+    .logo {
+        margin-bottom: 15px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        margin-left: 0;
+        text-align: center; /* Centrar texto en dispositivos pequeños */
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .nav-links a {
+        padding: 10px;
+        width: 100%;
+        display: block; /* Para que el enlace ocupe todo el ancho */
+    }
+
+    .dropdown-content {
+        position: static; /* Cambiar a estático para que fluya con el contenido */
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        margin-top: 0;
+        transform: translateX(0%);
+    }
+
+    .dropdown-content a {
+        padding-left: 30px; /* Indentar los sub-enlaces del dropdown */
+    }
+
+    #signOut {
+        margin-left: 0;
+        margin-top: 15px;
+        width: 100%;
+    }
+}
+
+
+/* Puedes reusar estilos de main.css o definirlos aquí para sobreescribir */
+
+body {
+    background: linear-gradient(135deg, #f0f8ff 0%, #ffe0f0 100%); /* Fondo suave */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* Contenedor principal de la página de configuración (las dos columnas) */
+.config-page-container {
+    display: flex; /* Habilitar Flexbox para las columnas */
+    flex-grow: 1; /* Para que ocupe el espacio restante */
+    padding: 20px;
+    max-width: 1200px; /* Ancho máximo para el contenedor de la configuración */
+    margin: 30px auto; /* Centrar y dar espacio */
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden; /* Para que los bordes redondeados se vean bien */
+}
+
+/* Barra lateral de navegación */
+.config-sidebar {
+    width: 280px; /* Ancho fijo para la barra lateral */
+    flex-shrink: 0; /* No permitir que se encoja */
+    padding: 20px 0; /* Padding interno */
+    border-right: 1px solid #eee; /* Separador */
+    background-color: #f7f7f7; /* Un fondo ligeramente diferente */
+}
+
+.config-sidebar h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.6rem;
+    color: #e91e63; /* Rosa de encabezado */
+    padding: 0 20px 15px; /* Padding para el título */
+    margin: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.config-sidebar ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+}
+
+.config-sidebar li {
+    margin-bottom: 5px;
+}
+
+.config-sidebar .sidebar-link {
+    display: flex; /* Para alinear icono y texto */
+    align-items: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #555;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 0 25px 25px 0; /* Borde redondeado solo a la derecha */
+}
+
+.config-sidebar .sidebar-link i { /* Estilo para los iconos de Font Awesome */
+    margin-right: 15px;
+    font-size: 1.2rem;
+    color: #9c27b0; /* Morado para iconos */
+}
+
+.config-sidebar .sidebar-link:hover,
+.config-sidebar .sidebar-link.active {
+    background-color: #e0f2f7; /* Azul claro para hover/activo */
+    color: #3f51b5; /* Azul más oscuro para texto activo */
+    font-weight: bold;
+}
+
+.config-sidebar .sidebar-link.active i {
+    color: #3f51b5; /* Icono también azul cuando activo */
+}
+
+
+/* Área de contenido principal de configuración */
+.config-content-area {
+    flex-grow: 1; /* Para que ocupe el espacio restante */
+    padding: 30px 40px;
+}
+
+.config-section {
+    animation: fadeIn 0.5s ease-out; /* Animación al mostrar una sección */
+}
+
+.config-section.hidden {
+    display: none; /* Ocultar secciones no activas */
+}
+
+.config-section h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    color: #9c27b0; /* Morado fuerte */
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+}
+
+.config-section p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Estilos para ítems de configuración individuales */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.setting-item:last-child {
+    border-bottom: none; /* No border en el último ítem */
+}
+
+.setting-item label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #444;
+    flex-grow: 1; /* Ocupa el espacio restante */
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="email"] {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-right: 15px;
+    font-size: 1rem;
+}
+
+.setting-item span {
+    color: #777;
+    margin-right: 15px;
+}
+
+.small-btn {
+    background-color: #673ab7; /* Morado */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.small-btn:hover {
+    background-color: #512da8;
+    transform: translateY(-1px);
+}
+
+/* Botones para eliminar cuenta (más grandes y con color de advertencia) */
+.action-btn.delete-btn {
+    background-color: #f44336; /* Rojo */
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 25px;
+}
+.action-btn.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Responsividad */
+@media (max-width: 992px) {
+    .config-page-container {
+        flex-direction: column; /* Apilar en pantallas más pequeñas */
+        padding: 15px;
+        margin: 20px auto;
+    }
+    .config-sidebar {
+        width: 100%; /* Ancho completo */
+        border-right: none;
+        border-bottom: 1px solid #eee; /* Separador inferior */
+        padding: 15px 0;
+    }
+    .config-sidebar h2 {
+        text-align: center;
+        padding-bottom: 10px;
+    }
+    .config-sidebar ul {
+        display: flex; /* Para un menú horizontal scrollable si es necesario */
+        overflow-x: auto; /* Permite scroll horizontal si hay muchas opciones */
+        padding: 0 10px;
+        justify-content: flex-start; /* Alineación inicial */
+    }
+    .config-sidebar li {
+        margin: 0 5px; /* Espacio entre items */
+        flex-shrink: 0; /* No permitir que se encojan */
+    }
+    .config-sidebar .sidebar-link {
+        border-radius: 10px; /* Redondear todos los lados */
+        justify-content: center; /* Centrar contenido */
+        padding: 10px 15px;
+        white-space: nowrap; /* Evitar que el texto se rompa */
+    }
+    .config-sidebar .sidebar-link i {
+        margin-right: 8px;
+    }
+
+    .config-content-area {
+        padding: 20px;
+    }
+    .config-section h1 {
+        font-size: 2rem;
+    }
+    .setting-item {
+        flex-direction: column; /* Apilar label y input/button */
+        align-items: flex-start;
+    }
+    .setting-item label {
+        margin-bottom: 5px;
+    }
+    .setting-item input,
+    .setting-item span,
+    .setting-item button {
+        width: 100%; /* Ancho completo para inputs y botones */
+        margin-right: 0;
+        margin-top: 5px;
+    }
+    .small-btn {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .config-page-container {
+        margin: 10px auto;
+        border-radius: 10px;
+    }
+    .config-section h1 {
+        font-size: 1.8rem;
+    }
+    .config-sidebar .sidebar-link {
+        font-size: 1rem;
+    }
+    .setting-item label {
+        font-size: 1rem;
+    }
+    .setting-item input,
+    .setting-item span,
+    .setting-item button {
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos específicos para la sección de Temas */
+.theme-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.theme-options .small-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre icono y texto */
+    padding: 10px 20px;
+    border-radius: 25px;
+    background-color: #f0f0f0; /* Fondo claro por defecto */
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+.theme-options .small-btn.active-theme {
+    background-color: #673ab7; /* Morado para el tema activo */
+    color: white;
+    border-color: #673ab7;
+}
+
+.theme-options .small-btn:hover {
+    background-color: #e5e5e5;
+}
+
+.theme-options .small-btn.active-theme:hover {
+    background-color: #512da8;
+}
+
+/* ------------------------------------- */
+/* ESTILOS PARA EL MODO OSCURO */
+/* ------------------------------------- */
+
+body.dark-mode {
+    background: #282c34; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+}
+
+body.dark-mode .main-header {
+    background: linear-gradient(to right, #444, #333); /* Degradado más oscuro */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .navbar .logo,
+body.dark-mode .nav-links a,
+body.dark-mode .dropbtn {
+    color: #f0f0f0;
+}
+
+body.dark-mode .nav-links a:hover,
+body.dark-mode .nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .dropdown-content {
+    background-color: #3a3f47;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .dropdown-content a {
+    color: #e0e0e0;
+    border-bottom-color: #4a4f57;
+}
+
+body.dark-mode .dropdown-content a:hover {
+    background-color: #4a4f57;
+    color: #8c8c8c;
+}
+
+body.dark-mode #signOut {
+    background-color: #600; /* Rojo oscuro para cerrar sesión */
+}
+
+body.dark-mode #signOut:hover {
+    background-color: #800;
+}
+
+.config-page-container.dark-mode { /* También la caja principal de configuración */
+    background-color: #363a40;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .config-sidebar {
+    background-color: #32363b;
+    border-right-color: #4a4f57;
+}
+
+body.dark-mode .config-sidebar h2 {
+    color: #ff9800; /* Naranja para el título oscuro */
+    border-bottom-color: #4a4f57;
+}
+
+body.dark-mode .config-sidebar .sidebar-link {
+    color: #a0a0a0;
+}
+
+body.dark-mode .config-sidebar .sidebar-link i {
+    color: #bb86fc; /* Púrpura más claro para iconos en modo oscuro */
+}
+
+body.dark-mode .config-sidebar .sidebar-link:hover,
+body.dark-mode .config-sidebar .sidebar-link.active {
+    background-color: #3e444b;
+    color: #bb86fc;
+}
+
+body.dark-mode .config-sidebar .sidebar-link.active i {
+    color: #bb86fc;
+}
+
+body.dark-mode .config-section h1 {
+    color: #bb86fc; /* Púrpura para títulos de sección */
+    text-shadow: none;
+}
+
+body.dark-mode .config-section p {
+    color: #b0b0b0;
+}
+
+body.dark-mode .setting-item {
+    border-bottom-color: #4a4f57;
+}
+
+body.dark-mode .setting-item label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .setting-item input {
+    background-color: #4a4f57;
+    border-color: #5a5f67;
+    color: #e0e0e0;
+}
+
+body.dark-mode .setting-item span {
+    color: #b0b0b0;
+}
+
+body.dark-mode .small-btn {
+    background-color: #bb86fc; /* Botones de acción en modo oscuro */
+    color: #222;
+}
+
+body.dark-mode .small-btn:hover {
+    background-color: #9c27b0;
+}
+
+body.dark-mode .action-btn.delete-btn {
+    background-color: #cf6679; /* Rojo para eliminar en modo oscuro */
+}
+
+body.dark-mode .action-btn.delete-btn:hover {
+    background-color: #b00020;
+}
+
+/* Estilos específicos para los botones de tema en modo oscuro */
+body.dark-mode .theme-options .small-btn {
+    background-color: #4a4f57;
+    color: #e0e0e0;
+    border-color: #5a5f67;
+}
+
+body.dark-mode .theme-options .small-btn:hover {
+    background-color: #5a5f67;
+}
+
+body.dark-mode .theme-options .small-btn.active-theme {
+    background-color: #bb86fc;
+    color: #222;
+    border-color: #bb86fc;
+}

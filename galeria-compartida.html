@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Galería Compartida</title>
+    <link rel="stylesheet" href="styles/galeria-compartida.css" />
+    <link rel="stylesheet" href="styles/styles.css" /> 
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">MI APP DE CITAS</div>
+            <ul class="nav-links">
+                <li><a href="home.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Servicios</a>
+                    <div class="dropdown-content">
+                        <a href="buscar_pareja.html">Buscar Pareja</a>
+                        <a href="mi_perfil.html">Mi Perfil</a>
+                        <a href="galeria_compartida.html">Galería Compartida</a>
+                        <a href="chat.html">Chat</a>
+                        <a href="video_llamada.html">Videollamada</a>
+                        <a href="cartas_amor.html">Cartas de Amor</a>
+                        <a href="regalos_virtuales.html">Regalos Virtuales</a>
+                        <a href="mini_juegos.html">Mini Juegos</a>
+                        <a href="test_compatibilidad.html">Test de Compatibilidad</a>
+                    </div>
+                </li>
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="#" id="signOut">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="gallery-page-container">
+        <section class="gallery-hero">
+            <h1>Galería Compartida</h1>
+            <p>Captura y comparte tus momentos más especiales.</p>
+            <div class="upload-section">
+                <input type="file" id="galleryImageInput" accept="image/*" style="display: none;">
+                <label for="galleryImageInput" class="upload-button">
+                    <i class="fas fa-plus-circle"></i> Subir Nueva Foto
+                </label>
+                <button id="uploadImageBtn" class="primary-button" style="display: none;">Subir Foto</button>
+            </div>
+        </section>
+
+        <section class="gallery-grid" id="galleryGrid">
+            <div class="loading-spinner" id="loadingSpinner"></div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="scripts/galeria_compartida.js"></script>
+    <script src="https://kit.fontawesome.com/6aa268e922.js" crossorigin="anonymous"></script> 
+</body>
+</html>

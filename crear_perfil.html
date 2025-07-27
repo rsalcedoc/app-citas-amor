@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Completa tu perfil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/perfil.css" />
+</head>
+<body>
+    <div class="form-container">
+        <h1>🎯 Completa tu Perfil</h1>
+        <p id="authStatus" class="auth-status"></p> <form id="perfilForm">
+            <input type="text" id="username" placeholder="Nombre de usuario" required />
+            <input type="number" id="age" placeholder="Edad" min="18" required />
+            <input type="text" id="location" placeholder="Ciudad o país" required />
+            <input type="url" id="avatar_url" placeholder="URL de tu foto (opcional)" />
+            <textarea id="bio" placeholder="Cuéntanos algo sobre ti..." rows="4"></textarea>
+            <button type="submit">Guardar Perfil ✅</button>
+        </form>
+        
+        <div id="message" class="message"></div> </div>
+
+    <script type="module" src="scripts/crear_perfil.js"></script>
+</body>
+</html>

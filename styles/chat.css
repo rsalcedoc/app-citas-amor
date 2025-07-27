@@ -1,0 +1,521 @@
+/* Variables CSS para una gestión de colores y espaciado más fácil */
+:root {
+    --primary-color: #ff5a5f; /* Un rojo/rosa vibrante, común en apps de citas */
+    --secondary-color: #007bff; /* Azul para acciones secundarias */
+    --text-color: #333;
+    --light-text-color: #666;
+    --background-color: #f0f2f5; /* Fondo suave */
+    --card-background: #ffffff;
+    --border-color: #e0e0e0;
+    --header-height: 80px;
+    --footer-height: 60px;
+    --font-family: 'Poppins', sans-serif; /* Fuente moderna y legible */
+}
+
+/* Importar fuente de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Reset Básico y Estilos Globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #e04a4e; /* Tono más oscuro al pasar el ratón */
+}
+
+/* Contenedor General para centrar el contenido */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header/Banner */
+header {
+    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); /* Degradado llamativo */
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Sticky header */
+    top: 0;
+    z-index: 1000;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 30px;
+    position: relative; /* Necesario para el dropdown */
+}
+
+nav ul li a {
+    color: white;
+    font-weight: 500;
+    font-size: 1.05em;
+    padding: 5px 0;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: #ffdd57; /* Un dorado suave al pasar el ratón */
+    border-bottom: 2px solid #ffdd57;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333; /* Fondo oscuro para contraste */
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    left: 50%; /* Centra el dropdown */
+    transform: translateX(-50%);
+    top: calc(100% + 10px); /* Espacio debajo del botón */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, top 0.3s ease;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition: background-color 0.3s ease;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #555;
+    color: #ffdd57;
+}
+
+.dropdown:hover .dropdown-content, /* Para hover en el botón padre */
+.dropdown-content.show { /* Para clic en el botón */
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    top: 100%; /* Sube a su posición final */
+}
+
+.dropbtn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Main Content */
+main {
+    flex-grow: 1;
+    padding: 40px 0;
+}
+
+/* Títulos de sección */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50; /* Un color más oscuro para títulos */
+}
+
+/* Botones Generales */
+button, .btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button:hover, .btn:hover {
+    background-color: #e04a4e;
+    transform: translateY(-2px);
+}
+
+button:active, .btn:active {
+    transform: translateY(0);
+}
+
+button:disabled, .btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Formularios y Campos de Entrada */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-family);
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: var(--card-background);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 90, 95, 0.2);
+    outline: none;
+}
+
+textarea {
+    resize: vertical; /* Solo permite redimensionar verticalmente */
+    min-height: 80px;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    height: var(--footer-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mensajes de carga y sin contenido */
+.loading-message, .no-messages-message, .no-friends-message, .no-suggestions-message {
+    text-align: center;
+    color: var(--light-text-color);
+    padding: 20px;
+    font-style: italic;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.loading-message.error {
+    color: #dc3545; /* Rojo para errores */
+    font-weight: bold;
+}
+
+/* Estilos para el login/register (si usas container para ellos) */
+.auth-container {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.auth-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+.auth-container p {
+    margin-bottom: 20px;
+}
+
+.auth-container .error-message {
+    color: #dc3545;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Home Page specific styles (if any, add here or in a home.css) */
+/* Example for main content area in home.html */
+.home-content-sections {
+    display: grid;
+    grid-template-columns: 1fr 300px; /* Main content and sidebar */
+    gap: 30px;
+    margin-top: 30px;
+    align-items: start; /* Alinea los elementos al inicio del grid */
+}
+
+.main-feed-section {
+    background-color: var(--card-background);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-section {
+    background-color: var(--card-background);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-section h3 {
+    font-size: 1.3em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Post creation area */
+.post-create-area {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-create-area textarea {
+    margin-bottom: 10px;
+    border-radius: 15px;
+    padding: 12px 20px;
+    background-color: var(--background-color);
+}
+
+.post-create-area button {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 0.95em;
+}
+
+/* Post Feed items */
+.post-item {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid var(--primary-color);
+}
+
+.post-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-username {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.post-timestamp {
+    font-size: 0.85em;
+    color: var(--light-text-color);
+}
+
+.post-content p {
+    font-size: 1em;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+/* Friend Request / Person Suggestion Items */
+.friend-request-item,
+.person-suggestion-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--background-color);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.request-avatar, .suggestion-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.request-info, .suggestion-info {
+    flex-grow: 1;
+}
+
+.request-username, .suggestion-username {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.request-actions button, .suggestion-actions button {
+    padding: 8px 15px;
+    font-size: 0.85em;
+    border-radius: 18px;
+    margin-left: 8px;
+}
+
+.accept-btn { background-color: #28a745; } /* Verde para aceptar */
+.accept-btn:hover { background-color: #218838; }
+
+.reject-btn { background-color: #dc3545; } /* Rojo para rechazar */
+.reject-btn:hover { background-color: #c82333; }
+
+.add-friend-btn { background-color: var(--secondary-color); } /* Azul para agregar */
+.add-friend-btn:hover { background-color: #0069d9; }
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo {
+        margin-bottom: 15px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li {
+        margin: 0 10px 10px 10px; /* Margen para elementos de navegación apilados */
+    }
+
+    .dropdown-content {
+        position: static; /* Cambia a estático para que fluya en el documento */
+        transform: none;
+        width: 100%;
+        box-shadow: none; /* Elimina la sombra para que no se vea raro */
+        border-radius: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        top: 0;
+        opacity: 1; /* Siempre visible si el padre está 'show' */
+        visibility: visible;
+        display: block !important; /* Forzar visibilidad cuando .show está */
+    }
+    .dropdown:hover .dropdown-content { /* Deshabilita el hover en pantallas pequeñas */
+        display: none;
+    }
+
+
+    main {
+        padding: 20px 0;
+    }
+
+    h1 {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+
+    .home-content-sections {
+        grid-template-columns: 1fr; /* Una sola columna en móviles */
+        gap: 20px;
+    }
+
+    .chat-container {
+        height: auto; /* Altura automática en móviles */
+        max-height: 80vh; /* Máx altura para que quepa en pantalla */
+    }
+
+    .chat-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        max-height: 250px; /* Altura limitada para la lista de amigos */
+    }
+
+    .chat-input-area {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message-input-area textarea {
+        margin-bottom: 0; /* Elimina el margen inferior */
+    }
+
+    .message-input-area button {
+        width: 100%; /* Botón de envío ocupa todo el ancho */
+    }
+}

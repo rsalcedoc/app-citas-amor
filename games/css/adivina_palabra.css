@@ -1,0 +1,399 @@
+/* Importa las fuentes de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&family=Montserrat:wght@500;700&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, #f0f8ff 0%, #ffe0f0 100%); /* Fondo suave y romántico */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Estilos del Banner: Atractivo y Consistente --- */
+.main-header {
+    background: linear-gradient(90deg, #9c27b0 0%, #e91e63 100%); /* Degradado morado a rosa */
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); /* Sombra más pronunciada */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    animation: slideInTop 0.8s ease-out; /* Animación de entrada */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    color: white;
+    font-family: 'Montserrat', sans-serif; /* Fuente más moderna para el logo */
+    font-size: 2rem; /* Tamaño más grande */
+    font-weight: 700;
+    letter-spacing: 1.5px; /* Más espaciado entre letras */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Sombra sutil para el logo */
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li {
+    position: relative;
+    margin-left: 35px; /* Más espacio entre ítems */
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.15rem; /* Letra ligeramente más grande */
+    padding: 10px 0;
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: relative;
+}
+
+.nav-links a::after { /* Efecto de subrayado animado */
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 3px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: #f8e71c; /* Un toque de amarillo vibrante */
+    transition: width 0.4s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+    left: 0;
+    background: #f8e71c;
+}
+
+.nav-links a:hover {
+    color: #ffe082; /* Tono más claro y brillante al pasar el ratón */
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
+
+/* Dropdown Styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #7b1fa2; /* Un morado más oscuro y profundo */
+    min-width: 200px; /* Ancho ligeramente mayor */
+    box-shadow: 0px 8px 25px 0px rgba(0,0,0,0.3); /* Sombra más suave y extendida */
+    z-index: 1;
+    border-radius: 10px; /* Bordes más redondeados */
+    overflow: hidden;
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* Ajuste inicial para la animación */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease; /* Transición más suave */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 14px 20px; /* Más padding */
+    text-decoration: none;
+    display: block;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, padding-left 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #6a1b9a; /* Tono más oscuro al pasar el ratón */
+    padding-left: 25px; /* Efecto de "empuje" al pasar el ratón */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0); /* Posición final de la animación */
+}
+/* --- Fin Estilos del Banner --- */
+
+.game-container {
+    flex-grow: 1;
+    padding: 30px 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+.adivina-palabra-game h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 3.5rem;
+    color: #e91e63;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.game-intro {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.game-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #4a148c;
+    margin-bottom: 30px;
+    background-color: #fce4ec; /* Fondo suave para la información */
+    padding: 15px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.word-display-container {
+    background-color: #fff3e0; /* Fondo crema para la palabra */
+    padding: 30px 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
+    min-height: 80px; /* Para mantener el espacio */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.word-display {
+    display: flex;
+    gap: 10px; /* Espacio entre las letras */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #9c27b0; /* Morado vibrante para las letras */
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    flex-wrap: wrap; /* Permitir que las letras se envuelvan */
+    justify-content: center;
+}
+
+.word-display span {
+    display: inline-block;
+    min-width: 40px; /* Ancho mínimo para cada guion/letra */
+    text-align: center;
+    border-bottom: 4px solid #9c27b0; /* Subrayado para los guiones */
+    margin-bottom: 5px; /* Espacio debajo del subrayado */
+}
+
+.guess-input {
+    padding: 12px 20px;
+    font-size: 1.3rem;
+    border: 2px solid #e91e63;
+    border-radius: 25px;
+    text-align: center;
+    width: 250px;
+    margin-right: 15px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.guess-input:focus {
+    border-color: #c2185b;
+    box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+}
+
+.action-btn {
+    background-color: #673ab7; /* Morado general */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-top: 10px; /* Ajuste para el botón si se envuelve */
+}
+
+.action-btn:hover:not(:disabled) {
+    background-color: #512da8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.secondary-btn {
+    background-color: #f0f0f0;
+    color: #673ab7;
+    border: 2px solid #673ab7;
+    margin-left: 15px; /* Espacio para el botón "Resolver" */
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #e0e0e0;
+    color: #512da8;
+}
+
+.tertiary-btn {
+    background-color: transparent;
+    color: #e91e63;
+    border: 2px solid #e91e63;
+    margin-left: 15px; /* Espacio para el botón "Volver" */
+}
+.tertiary-btn:hover:not(:disabled) {
+    background-color: #e91e63;
+    color: white;
+}
+
+.message-display {
+    margin-top: 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e91e63; /* Mensajes de estado en rosa */
+    min-height: 30px; /* Para evitar saltos de contenido */
+}
+
+.game-controls {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Modal Styles (Ventana emergente de fin de juego) */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para cubrir toda la pantalla */
+    z-index: 1001; /* Z-index más alto que el header */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Habilitar scroll si el contenido es grande */
+    background-color: rgba(0,0,0,0.6); /* Fondo semi-transparente oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    animation: zoomIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+    font-family: 'Pacifico', cursive;
+    color: #e91e63;
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    font-size: 1.3rem;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.modal-content .action-btn {
+    margin: 10px;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #e91e63;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+@keyframes slideInTop {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .main-header { padding: 10px 15px; }
+    .logo { font-size: 1.5rem; }
+    .nav-links { display: none; }
+    .dropdown { display: none; }
+
+    .game-container { padding: 20px; margin: 15px auto; }
+    .adivina-palabra-game h1 { font-size: 2.8rem; }
+    .game-intro { font-size: 1rem; }
+    .game-info { font-size: 1.1rem; gap: 20px; padding: 10px 15px; }
+    .word-display { font-size: 2.5rem; gap: 8px; }
+    .word-display span { min-width: 30px; border-bottom: 3px solid #9c27b0; }
+    .guess-input { width: 180px; font-size: 1.1rem; padding: 10px 15px; margin-right: 10px; }
+    .action-btn { padding: 10px 20px; font-size: 1rem; margin-top: 5px; }
+    .secondary-btn { margin-left: 10px; }
+    .tertiary-btn { margin-left: 10px; }
+    .message-display { font-size: 1rem; }
+    .modal-content { padding: 30px; width: 90%; }
+    .modal-content h2 { font-size: 2.5rem; }
+    .modal-content p { font-size: 1.1rem; }
+}
+
+@media (max-width: 480px) {
+    .logo { font-size: 1.2rem; }
+    .adivina-palabra-game h1 { font-size: 2.2rem; }
+    .game-info { flex-direction: column; gap: 10px; }
+    .word-display { font-size: 2rem; gap: 6px; }
+    .word-display span { min-width: 25px; border-bottom: 2px solid #9c27b0; }
+    .guess-input { width: 80%; margin: 0 auto 15px auto; display: block; }
+    .action-btn, .secondary-btn, .tertiary-btn { 
+        width: 90%; 
+        margin: 5px auto; 
+        display: block; 
+        margin-left: 0; /* Reiniciar margen izquierdo */
+    }
+}

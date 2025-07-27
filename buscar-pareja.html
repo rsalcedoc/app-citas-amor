@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buscar Pareja - Amor Sin Fronteras</title>
+  <link rel="stylesheet" href="styles/buscar-pareja.css" />
+</head>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const supabase = createClient(
+  'https://ihpfwakcpvrwsmkbtwnt.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz...'
+);
+
+
+   async function cargarUsuarios() {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const currentUser = sessionData?.session?.user;
+
+    const { data: usuarios, error } = await supabase
+      .from('profiles') // o 'Users' si usas ese nombre
+      .select('*')
+      .neq('id', currentUser?.id);
+
+    const container = document.getElementById('usuariosContainer');
+    container.innerHTML = '';
+
+    if (error || !usuarios) {
+      container.innerHTML = '<p style="text-align:center;">No se pudieron cargar usuarios 😢</p>';
+      return;
+    }
+
+    if (usuarios.length === 0) {
+      container.innerHTML = '<p style="text-align:center;">No hay usuarios registrados aún 💔</p>';
+      return;
+    }
+
+    usuarios.forEach(user => {
+      const tarjeta = document.createElement('article');
+      tarjeta.classList.add('tarjeta');
+      tarjeta.innerHTML = `
+        <img src="${user.avatar_url || 'https://randomuser.me/api/portraits/lego/1.jpg'}" alt="Perfil" />
+        <h3>${user.username || 'Usuario Anónimo'}, ${user.age || '--'}</h3>
+        <p>📍 ${user.location || 'Ubicación desconocida'}</p>
+        <p>💬 ${user.bio || 'Sin descripción aún'}</p>
+        <button onclick="alert('¡Función para enviar mensaje próximamente!')">Enviar mensaje 💌</button>
+      `;
+      container.appendChild(tarjeta);
+    });
+  }
+
+  cargarUsuarios();
+</script>
+
+<body>
+  <header>
+    <h1>💘 Encuentra a tu Persona Especial 💘</h1>
+    <a href="home.html" class="volver">← Volver al Inicio</a>
+  </header>
+
+  <section class="filtros">
+    <h2>Filtrar</h2>
+    <form>
+      <input type="text" placeholder="País o ciudad..." />
+      <input type="number" placeholder="Edad mínima" min="18" />
+      <input type="number" placeholder="Edad máxima" min="18" />
+      <select>
+        <option value="">Intereses</option>
+        <option>Lectura</option>
+        <option>Videojuegos</option>
+        <option>Deportes</option>
+        <option>Música</option>
+        <option>Películas</option>
+      </select>
+      <button type="submit">Buscar 💘</button>
+    </form>
+  </section>
+
+  <main class="resultados" id="usuariosContainer">
+    <article class="tarjeta">
+      <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Perfil" />
+      <h3>Camila, 24</h3>
+      <p>📍 Medellín, Colombia</p>
+      <p>🎵 Amante de la música y la poesía</p>
+      <button>Enviar mensaje 💌</button>
+    </article>
+
+    <article class="tarjeta">
+      <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Perfil" />
+      <h3>Lucas, 27</h3>
+      <p>📍 Buenos Aires, Argentina</p>
+      <p>🎮 Gamer y fan de películas románticas</p>
+      <button>Enviar mensaje 💌</button>
+    </article>
+
+    <!-- Puedes copiar más tarjetas como estas -->
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Amor Sin Fronteras. Todos los derechos reservados 💖</p>
+  </footer>
+</body>
+</html>

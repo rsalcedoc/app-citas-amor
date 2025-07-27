@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LoveHub - Conecta, Juega y Enamórate</title>
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:,">
+  
+</head>
+<body>
+  <header>
+    <div class="container header-container">
+      <h1 class="logo">❤️ LoveHub</h1>
+      <nav>
+        <button class="btn btn-primary" id='btn-login'>Iniciar Sesión</button>
+        <button class="btn btn-secondary" id='btn-register'>Regístrate</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-text">
+        <h2>¡Conecta, juega y encuentra el amor de tu vida!</h2>
+        <p>Chat en línea, minijuegos, retos, cartas de amor y llamadas. Todo en un solo lugar, diseñado para que uses todos los días.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-lg">Comenzar Ahora</button>
+          <button class="btn btn-outline btn-lg">Saber Más</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/images/imagen_2025-06-30_121046804.ico" alt="Chat y amor" />
+      </div>
+    </section>
+
+   
+  </main>
+
+  <footer>
+    <div class="container footer-container">
+      <p>© 2025 LoveHub. Todos los derechos reservados.</p>
+    </div>
+  </footer>  
+
+  <script>
+  document.getElementById('btn-login').addEventListener('click', () => {
+    window.location.href = 'iniciar_sesion.html';
+  });
+
+  document.getElementById('btn-register').addEventListener('click', () => {
+    window.location.href = 'registrate.html';
+  });
+</script>  
+
+</body>
+</html>

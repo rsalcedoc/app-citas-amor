@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Mi Aplicación de Citas</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/mi-perfil.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="home.html" class="logo">Mi App de Citas</a>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Inicio</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Servicios <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="buscar-pareja.html">Buscar Pareja</a>
+                            <a href="mi-perfil.html">Mi Perfil</a>
+                            <a href="galeria-compartida.html">Galería Compartida</a>
+                            <a href="chat.html">Chat</a>
+                            <a href="llamada-voz.html">Llamada de Voz</a>
+                            <a href="videollamada.html">Videollamada</a>
+                            <a href="cartas-amor.html">Cartas de Amor</a>
+                            <a href="regalos-virtuales.html">Regalos Virtuales</a>
+                            <a href="minijuegos-parejas.html">Minijuegos para Parejas</a>
+                            <a href="test-compatibilidad.html">Test de Compatibilidad</a>
+                        </div>
+                    </li>
+                    <li><a href="configuracion.html">Configuración</a></li>
+                    <li><a href="#" id="logout">Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="profile-main-content">
+        <div class="container profile-container">
+            <h1>Mi Perfil</h1>
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="avatar-upload-area">
+                        <img id="profileAvatar" src="https://via.placeholder.com/150" alt="Tu Avatar" class="profile-avatar">
+                        <label for="avatarInput" class="upload-button"><i class="fas fa-camera"></i></label>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    </div>
+                    <h2 id="profileUsername">Cargando...</h2>
+                    <p id="profileBio" class="profile-bio">Cargando biografía...</p>
+                </div>
+
+                <div class="profile-details">
+                    <h3>Detalles del Perfil</h3>
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="usernameInput">Nombre de Usuario:</label>
+                            <input type="text" id="usernameInput" placeholder="Tu nombre de usuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bioInput">Biografía:</label>
+                            <textarea id="bioInput" placeholder="Cuéntanos sobre ti..." rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="ageInput">Edad:</label>
+                            <input type="number" id="ageInput" placeholder="Tu edad" min="18" max="99">
+                        </div>
+                        <div class="form-group">
+                            <label for="genderSelect">Género:</label>
+                            <select id="genderSelect">
+                                <option value="">Selecciona tu género</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="locationInput">Ubicación:</label>
+                            <input type="text" id="locationInput" placeholder="Tu ciudad, país">
+                        </div>
+                        <div class="form-group">
+                            <label for="interestsInput">Intereses (separados por comas):</label>
+                            <input type="text" id="interestsInput" placeholder="ej. música, lectura, deportes">
+                        </div>
+                        
+                        <button type="submit" id="saveProfileBtn">Guardar Cambios</button>
+                    </form>
+                </div>
+
+                <div class="profile-gallery">
+                    <h3>Tu Galería de Fotos</h3>
+                    <div id="galleryPhotos" class="gallery-grid">
+                        <p class="no-photos-message">Aún no tienes fotos en tu galería.</p>
+                    </div>
+                    <div class="upload-gallery-photo-area">
+                        <label for="galleryInput" class="btn"><i class="fas fa-upload"></i> Subir Nueva Foto</label>
+                        <input type="file" id="galleryInput" accept="image/*" multiple style="display: none;">
+                        <button id="uploadGalleryBtn" style="display: none;">Subir Fotos Seleccionadas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Mi Aplicación de Citas. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="scripts/supabase.js"></script>
+    <script type="module" src="scripts/mi-perfil.js"></script>
+</body>
+</html>

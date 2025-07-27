@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cartas de Amor</title>
+    <link rel="stylesheet" href="styles/cartas-amor.css" />
+    <link rel="stylesheet" href="styles/styles.css" /> 
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">MI APP DE CITAS</div>
+            <ul class="nav-links">
+                <li><a href="home.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Servicios</a>
+                    <div class="dropdown-content">
+                        <a href="buscar-pareja.html">Buscar Pareja</a>
+                        <a href="mi-perfil.html">Mi Perfil</a>
+                        <a href="galeria-compartida.html">Galería Compartida</a>
+                        <a href="chat.html">Chat</a>
+                        <a href="Videollamada.Html">Videollamada</a>
+                        <a href="cartas-amor.html">Cartas de Amor</a>
+                        <a href="regalos-virtuales.html">Regalos Virtuales</a>
+                        <a href="minijuegos-parejas.html">Mini Juegos</a>
+                        <a href="test-compatibilidad.html">Test de Compatibilidad</a>
+                    </div>
+                </li>
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="#" id="signOut">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="love-letters-page-container">
+        <section class="letters-hero">
+            <h1>Cartas de Amor</h1>
+            <p>Expresa tus sentimientos más profundos con palabras que perduran.</p>
+            <button id="openComposeModal" class="compose-button">
+                <i class="fas fa-pencil-alt"></i> Escribir Nueva Carta
+            </button>
+        </section>
+
+        <section class="letters-grid" id="lettersGrid">
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            <p id="noLettersMessage" class="no-letters-message" style="display: none;">
+                ¡Aún no has recibido o enviado cartas! Anímate a escribir la primera.
+            </p>
+        </section>
+    </main>
+
+    <div id="composeLetterModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Escribir Nueva Carta</h2>
+            <form id="composeLetterForm">
+                <div class="form-group">
+                    <label for="recipientSelect">Para:</label>
+                    <select id="recipientSelect" required>
+                        <option value="">Selecciona un usuario</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="letterTitle">Asunto:</label>
+                    <input type="text" id="letterTitle" placeholder="Un dulce pensamiento..." maxlength="100" required />
+                </div>
+                <div class="form-group">
+                    <label for="letterContent">Contenido:</label>
+                    <textarea id="letterContent" placeholder="Querido/a..., cada momento a tu lado es un tesoro..." rows="8" required></textarea>
+                </div>
+                <button type="submit" class="primary-button" id="sendLetterBtn">Enviar Carta</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="viewLetterModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="viewLetterTitle"></h2>
+            <p class="view-letter-meta">De: <span id="viewLetterSender"></span></p>
+            <p class="view-letter-meta">Fecha: <span id="viewLetterDate"></span></p>
+            <div id="viewLetterContent" class="view-letter-content"></div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="scripts/cartas-amor.js"></script>
+    <script src="https://kit.fontawesome.com/6aa268e922.js" crossorigin="anonymous"></script> 
+</body>
+</html>

@@ -1,0 +1,88 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+}
+
+header {
+    background-color: rgba(0,0,0,0.3);
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 1.2px;
+}
+
+.call-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.call-info p {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.call-status {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #00ff00;
+    margin-bottom: 40px;
+    text-shadow: 0 0 8px #00ff00;
+}
+
+.controls {
+    display: flex;
+    gap: 30px;
+}
+
+.btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+}
+
+.btn-mute {
+    background-color: #f39c12;
+    color: #fff;
+}
+
+.btn-mute:hover {
+    background-color: #d78c09;
+}
+
+.btn-end {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+.btn-end:hover {
+    background-color: #c0392b;
+}
+
+.btn-speaker {
+    background-color: #2980b9;
+    color: #fff;
+}
+
+.btn-speaker:hover {
+    background-color: #1c5d8f;
+}

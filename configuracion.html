@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración - MI APP DE CITAS</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/configuracion.css" />
+    <script src="https://kit.fontawesome.com/6aa268e922.js" crossorigin="anonymous"></script> 
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">MI APP DE CITAS</div>
+            <ul class="nav-links">
+                <li><a href="home.html">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Servicios</a>
+                    <div class="dropdown-content">
+                        <a href="../buscar-pareja.html">Buscar Pareja</a>
+                        <a href="../mi-perfil.html">Mi Perfil</a>
+                        <a href="../galeria-compartida.html">Galería Compartida</a>
+                        <a href="../chat.html">Chat</a>
+                        <a href="../Videollamada.Html">Videollamada</a>
+                        <a href="../cartas-amor.html">Cartas de Amor</a>
+                        <a href="../regalos-virtuales.html">Regalos Virtuales</a>
+                        <a href="../minijuegos-parejas.html">Mini Juegos</a>
+                        <a href="../test-compatibilidad.html">Test de Compatibilidad</a>
+                    </div>
+                </li>
+                <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="#" id="signOut">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="config-page-container">
+        <aside class="config-sidebar">
+            <h2>Configuración</h2>
+            <ul>
+                <li><a href="#" class="sidebar-link active" data-section="general"><i class="fas fa-cog"></i> General</a></li>
+                <li><a href="#" class="sidebar-link" data-section="security-login"><i class="fas fa-lock"></i> Seguridad e inicio de sesión</a></li>
+                <li><a href="#" class="sidebar-link" data-section="privacy"><i class="fas fa-user-shield"></i> Privacidad</a></li>
+                <li><a href="#" class="sidebar-link" data-section="notifications"><i class="fas fa-bell"></i> Notificaciones</a></li>
+                <li><a href="#" class="sidebar-link" data-section="profile-settings"><i class="fas fa-id-card"></i> Configuración del perfil</a></li>
+                <li><a href="#" class="sidebar-link" data-section="blocking"><i class="fas fa-ban"></i> Bloqueos</a></li>
+                <li><a href="#" class="sidebar-link" data-section="account-access"><i class="fas fa-key"></i> Acceso e información</a></li>
+                <li><a href="#" class="sidebar-link" data-section="themes"><i class="fas fa-palette"></i> Temas y Apariencia</a></li> <li><a href="#" class="sidebar-link" data-section="delete-account"><i class="fas fa-trash-alt"></i> Eliminar cuenta</a></li>
+            </ul>
+        </aside>
+
+        <section class="config-content-area">
+            <div id="general-content" class="config-section active">
+                <h1>Configuración General de la Cuenta</h1>
+                <p>Aquí puedes editar tu nombre, email, y otros datos de contacto.</p>
+                <div class="setting-item">
+                    <label>Nombre:</label>
+                    <input type="text" value="Tu Nombre Actual">
+                    <button class="small-btn">Editar</button>
+                </div>
+                <div class="setting-item">
+                    <label>Correo electrónico:</label>
+                    <input type="email" value="tu.email@example.com">
+                    <button class="small-btn">Editar</button>
+                </div>
+                <div class="setting-item">
+                    <label>Contraseña:</label>
+                    <span>***********</span>
+                    <button class="small-btn">Editar</button>
+                </div>
+            </div>
+
+            <div id="security-login-content" class="config-section hidden">
+                <h1>Seguridad e inicio de sesión</h1>
+                <p>Cambia tu contraseña y recibe alertas sobre inicios de sesión no reconocidos.</p>
+                <div class="setting-item">
+                    <label>Cambiar contraseña:</label>
+                    <button class="small-btn">Cambiar</button>
+                </div>
+                <div class="setting-item">
+                    <label>Autenticación de dos factores:</label>
+                    <span>Desactivada</span>
+                    <button class="small-btn">Configurar</button>
+                </div>
+                <div class="setting-item">
+                    <label>Dónde iniciaste sesión:</label>
+                    <button class="small-btn">Ver</button>
+                </div>
+            </div>
+
+            <div id="privacy-content" class="config-section hidden">
+                <h1>Configuración de privacidad</h1>
+                <p>Controla quién puede ver tu contenido y contactarte.</p>
+                <div class="setting-item">
+                    <label>Quién puede ver tus publicaciones futuras:</label>
+                    <span>Amigos</span>
+                    <button class="small-btn">Editar</button>
+                </div>
+                <div class="setting-item">
+                    <label>Quién puede enviarte solicitudes de amistad:</label>
+                    <span>Todos</span>
+                    <button class="small-btn">Editar</button>
+                </div>
+            </div>
+
+            <div id="notifications-content" class="config-section hidden">
+                <h1>Configuración de notificaciones</h1>
+                <p>Decide cómo y cuándo quieres recibir notificaciones.</p>
+                <div class="setting-item">
+                    <label>Correo electrónico:</label>
+                    <span>Activado</span>
+                    <button class="small-btn">Editar</button>
+                </div>
+                <div class="setting-item">
+                    <label>Notificaciones push:</label>
+                    <span>Activado</span>
+                    <button class="small-btn">Editar</button>
+                </div>
+            </div>
+
+            <div id="profile-settings-content" class="config-section hidden">
+                <h1>Configuración del perfil</h1>
+                <p>Ajusta cómo se ve tu perfil público y tu información.</p>
+                <div class="setting-item">
+                    <label>Visibilidad de perfil:</label>
+                    <span>Público</span>
+                    <button class="small-btn">Editar</button>
+                </div>
+            </div>
+
+            <div id="blocking-content" class="config-section hidden">
+                <h1>Bloqueos</h1>
+                <p>Gestiona la lista de personas que has bloqueado.</p>
+                <div class="setting-item">
+                    <label>Usuarios bloqueados:</label>
+                    <button class="small-btn">Ver lista de bloqueos</button>
+                </div>
+            </div>
+
+            <div id="account-access-content" class="config-section hidden">
+                <h1>Acceso e información</h1>
+                <p>Accede a tu información personal o descarga una copia.</p>
+                <div class="setting-item">
+                    <label>Descargar tu información:</label>
+                    <button class="small-btn">Descargar</button>
+                </div>
+            </div>
+            
+            <div id="themes-content" class="config-section hidden">
+                <h1>Temas y Apariencia</h1>
+                <p>Personaliza la apariencia de la interfaz de la aplicación.</p>
+                <div class="setting-item">
+                    <label>Modo de visualización:</label>
+                    <div class="theme-options">
+                        <button class="small-btn" id="lightModeBtn"><i class="fas fa-sun"></i> Claro</button>
+                        <button class="small-btn" id="darkModeBtn"><i class="fas fa-moon"></i> Oscuro</button>
+                    </div>
+                </div>
+                </div>
+
+            <div id="delete-account-content" class="config-section hidden">
+                <h1>Eliminar tu cuenta y tu información</h1>
+                <p>Puedes desactivar temporalmente tu cuenta o eliminarla de forma permanente.</p>
+                <button class="action-btn delete-btn">Desactivar cuenta</button>
+                <button class="action-btn delete-btn">Eliminar cuenta permanentemente</button>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>    
+    <script type="module" src="scripts/configuracion.js"></script> 
+</body>
+</html>
