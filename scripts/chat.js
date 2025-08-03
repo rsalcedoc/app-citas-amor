@@ -2,12 +2,14 @@
 
 import { supabase } from './supabase.js';
 
-// Referencias a elementos del DOM
+// --- Referencias a elementos del DOM ---
 const logoutButton = document.getElementById('logout');
 const dropbtn = document.querySelector('.dropbtn');
 const dropdownContent = document.querySelector('.dropdown-content');
 
 const friendList = document.getElementById('friendList');
+// Referencia a la cabecera del chat completa para hacerla clicable
+const chatHeader = document.querySelector('.chat-header');
 const chatRecipientAvatar = document.getElementById('chatRecipientAvatar');
 const chatRecipientName = document.getElementById('chatRecipientName');
 const messagesDisplay = document.getElementById('messagesDisplay');
@@ -25,14 +27,17 @@ function formatMessageTime(dateString) {
     const diffHours = Math.abs(date.getHours() - now.getHours());
 
     if (date.toDateString() === now.toDateString()) {
-        // Mismo día, mostrar solo la hora
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     } else if (diffHours < 48 && date.getDate() === now.getDate() - 1) {
-        // Ayer
         return `Ayer ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     } else {
-        // Otro día, mostrar fecha y hora
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+}
+
+function redirectToProfile(userId) {
+    if (userId) {
+        window.location.href = `perfil.html?user_id=${userId}`;
     }
 }
 
@@ -43,7 +48,7 @@ async function checkAuthAndLoadData() {
 
     if (error || !user) {
         console.warn('Usuario no autenticado, redirigiendo a la página de inicio.');
-        window.location.href = 'index.html'; // Redirige a la página de login/registro
+        window.location.href = 'index.html';
         return;
     }
 
@@ -73,7 +78,6 @@ window.addEventListener('click', (event) => {
 async function loadFriends() {
     friendList.innerHTML = '<p class="loading-message">Cargando amigos...</p>';
 
-    // Obtener los IDs de los amigos del usuario actual
     const { data: friendships, error: friendError } = await supabase
         .from('friendships')
         .select('user1_id, user2_id')
@@ -94,7 +98,6 @@ async function loadFriends() {
         return;
     }
 
-    // Ahora, obtener los perfiles de esos amigos
     const { data: friends, error: profileError } = await supabase
         .from('profiles')
         .select('id, username, avatar_url')
@@ -120,28 +123,50 @@ async function loadFriends() {
         `;
         friendList.appendChild(friendItem);
 
-        friendItem.addEventListener('click', () => selectFriend(friend.id, friend.username, friendItem.dataset.friendAvatar));
+        // Añadimos un event listener que llama a selectFriend con todos los datos
+        friendItem.addEventListener('click', () => {
+            selectFriend(friend.id, friend.username, friendItem.dataset.friendAvatar);
+        });
     });
 }
 
 // --- Selección de Amigo y Carga de Mensajes ---
 
 async function selectFriend(friendId, friendName, friendAvatar) {
+    // Optimización: Si ya tenemos el chat con este amigo abierto, no hacemos nada.
+    if (currentRecipientId === friendId) {
+        return;
+    }
+
     currentRecipientId = friendId;
+
+    // Actualizar el estado visual de la lista de amigos
+    document.querySelectorAll('.friend-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    const selectedFriendItem = document.querySelector(`.friend-item[data-friend-id="${friendId}"]`);
+    if (selectedFriendItem) {
+        selectedFriendItem.classList.add('active');
+    }
 
     // Actualizar el encabezado del chat
     chatRecipientAvatar.src = friendAvatar;
     chatRecipientAvatar.alt = friendName;
     chatRecipientName.textContent = friendName;
+    
+    // Asignar el evento para ver el perfil
+    chatHeader.dataset.friendId = friendId;
+    chatHeader.style.cursor = 'pointer'; // Indicador visual de que es clicable
+    // Eliminamos el listener anterior antes de añadir el nuevo para evitar duplicados
+    chatHeader.removeEventListener('click', redirectToProfile);
+    chatHeader.addEventListener('click', () => redirectToProfile(friendId));
 
     messagesDisplay.innerHTML = '<p class="loading-message">Cargando mensajes...</p>';
-    messagesDisplay.scrollTop = messagesDisplay.scrollHeight; // Scroll to bottom
-
-    // Desactivar temporalmente el input de mensaje
+    
     messageInput.disabled = true;
     sendMessageButton.disabled = true;
 
-    // Cargar mensajes entre el usuario actual y el amigo seleccionado
+    // Cargar mensajes
     const { data: messages, error } = await supabase
         .from('messages')
         .select('*')
@@ -154,15 +179,14 @@ async function selectFriend(friendId, friendName, friendAvatar) {
         return;
     }
 
-    messagesDisplay.innerHTML = ''; // Limpiar mensaje de carga
+    messagesDisplay.innerHTML = '';
     if (messages.length === 0) {
         messagesDisplay.innerHTML = '<p class="no-messages-message">¡Es el inicio de una nueva conversación!</p>';
     } else {
         messages.forEach(msg => displayMessage(msg));
-        messagesDisplay.scrollTop = messagesDisplay.scrollHeight; // Scroll to bottom after loading
+        messagesDisplay.scrollTop = messagesDisplay.scrollHeight;
     }
 
-    // Habilitar el input de mensaje
     messageInput.disabled = false;
     sendMessageButton.disabled = false;
     messageInput.focus();
@@ -174,11 +198,10 @@ async function sendMessage() {
     const content = messageInput.value.trim();
 
     if (!content || !currentRecipientId) {
-        // No hay contenido o no hay destinatario seleccionado
         return;
     }
 
-    sendMessageButton.disabled = true; // Deshabilitar para evitar múltiples envíos
+    sendMessageButton.disabled = true;
     messageInput.disabled = true;
 
     const { data, error } = await supabase
@@ -195,12 +218,10 @@ async function sendMessage() {
         console.error('Error al enviar mensaje:', error.message);
         alert('Error al enviar mensaje: ' + error.message);
     } else {
-        messageInput.value = ''; // Limpiar input
-        console.log('Mensaje enviado exitosamente.');
-        // El mensaje se mostrará vía Realtime
+        messageInput.value = '';
     }
 
-    sendMessageButton.disabled = false; // Habilitar de nuevo
+    sendMessageButton.disabled = false;
     messageInput.disabled = false;
     messageInput.focus();
 }
@@ -210,25 +231,31 @@ function displayMessage(message) {
     messageElement.classList.add('message-item');
 
     if (message.sender_id === currentUserId) {
-        messageElement.classList.add('sent'); // Clase para mensajes enviados por el usuario actual
+        messageElement.classList.add('sent');
     } else {
-        messageElement.classList.add('received'); // Clase para mensajes recibidos
+        messageElement.classList.add('received');
     }
 
     messageElement.innerHTML = `
         <div class="message-content">${message.content}</div>
         <div class="message-timestamp">${formatMessageTime(message.created_at)}</div>
     `;
+
+    // Optimización: Eliminar mensaje de placeholder si existe antes de añadir el primer mensaje
+    const placeholder = messagesDisplay.querySelector('.no-messages-message');
+    if (placeholder) {
+        messagesDisplay.removeChild(placeholder);
+    }
+
     messagesDisplay.appendChild(messageElement);
-    messagesDisplay.scrollTop = messagesDisplay.scrollHeight; // Scroll al final
+    messagesDisplay.scrollTop = messagesDisplay.scrollHeight;
 }
 
 sendMessageButton.addEventListener('click', sendMessage);
 
-// Permitir enviar con Enter en el textarea
 messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { // Shift+Enter para nueva línea
-        e.preventDefault(); // Evitar nueva línea en el textarea
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
         sendMessage();
     }
 });
@@ -237,12 +264,10 @@ messageInput.addEventListener('keypress', (e) => {
 
 function setupRealtimeSubscriptions() {
     supabase
-        .channel('private_messages') // Puedes usar un canal más específico si es necesario
+        .channel('private_messages')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-            console.log('Nuevo mensaje recibido vía Realtime:', payload);
             const newMessage = payload.new;
 
-            // Mostrar el mensaje solo si es para el chat actual
             if (
                 (newMessage.sender_id === currentUserId && newMessage.receiver_id === currentRecipientId) ||
                 (newMessage.sender_id === currentRecipientId && newMessage.receiver_id === currentUserId)
@@ -265,6 +290,4 @@ logoutButton.addEventListener('click', async () => {
     }
 });
 
-
-// Iniciar la verificación de autenticación y carga de datos al cargar el DOM
 document.addEventListener('DOMContentLoaded', checkAuthAndLoadData);

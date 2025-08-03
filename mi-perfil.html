@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - Mi Aplicación de Citas</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/mi-perfil.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/mi-perfil.css">
+    <script src="https://kit.fontawesome.com/6aa268e922.js" crossorigin="anonymous"></script> 
 </head>
 <body>
     <header>
@@ -34,80 +35,109 @@
                 </ul>
             </nav>
         </div>
-    </header>
+    </header
 
     <main class="profile-main-content">
-        <div class="container profile-container">
-            <h1>Mi Perfil</h1>
-
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="avatar-upload-area">
+        <div class="container profile-page-layout">
+            <section class="profile-header-section">
+                <div class="cover-photo-container">
+                    <img src="https://via.placeholder.com/1200x300" alt="Foto de Portada" id="coverPhoto" class="cover-photo">
+                    <div class="profile-avatar-container">
                         <img id="profileAvatar" src="https://via.placeholder.com/150" alt="Tu Avatar" class="profile-avatar">
                         <label for="avatarInput" class="upload-button"><i class="fas fa-camera"></i></label>
                         <input type="file" id="avatarInput" accept="image/*" style="display: none;">
                     </div>
-                    <h2 id="profileUsername">Cargando...</h2>
+                </div>
+                <div class="profile-info-bar">
+                    <h1 id="profileUsername">Cargando...</h1>
                     <p id="profileBio" class="profile-bio">Cargando biografía...</p>
+                    <button id="editProfileBtn" class="btn btn-secondary">Editar Perfil</button>
                 </div>
+            </section>
 
-                <div class="profile-details">
-                    <h3>Detalles del Perfil</h3>
-                    <form id="profileForm">
-                        <div class="form-group">
-                            <label for="usernameInput">Nombre de Usuario:</label>
-                            <input type="text" id="usernameInput" placeholder="Tu nombre de usuario" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="bioInput">Biografía:</label>
-                            <textarea id="bioInput" placeholder="Cuéntanos sobre ti..." rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="ageInput">Edad:</label>
-                            <input type="number" id="ageInput" placeholder="Tu edad" min="18" max="99">
-                        </div>
-                        <div class="form-group">
-                            <label for="genderSelect">Género:</label>
-                            <select id="genderSelect">
-                                <option value="">Selecciona tu género</option>
-                                <option value="masculino">Masculino</option>
-                                <option value="femenino">Femenino</option>
-                                <option value="otro">Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="locationInput">Ubicación:</label>
-                            <input type="text" id="locationInput" placeholder="Tu ciudad, país">
-                        </div>
-                        <div class="form-group">
-                            <label for="interestsInput">Intereses (separados por comas):</label>
-                            <input type="text" id="interestsInput" placeholder="ej. música, lectura, deportes">
-                        </div>
-                        
-                        <button type="submit" id="saveProfileBtn">Guardar Cambios</button>
-                    </form>
-                </div>
+            <section class="profile-content-section">
+                <aside class="profile-left-sidebar">
+                    <div class="profile-details-card card">
+                        <h3><i class="fas fa-info-circle"></i> Información</h3>
+                        <p><i class="fas fa-venus-mars"></i> **Género:** <span id="genderInfo">N/A</span></p>
+                        <p><i class="fas fa-birthday-cake"></i> **Edad:** <span id="ageInfo">N/A</span></p>
+                        <p><i class="fas fa-map-marker-alt"></i> **Ubicación:** <span id="locationInfo">N/A</span></p>
+                    </div>
 
-                <div class="profile-gallery">
-                    <h3>Tu Galería de Fotos</h3>
-                    <div id="galleryPhotos" class="gallery-grid">
-                        <p class="no-photos-message">Aún no tienes fotos en tu galería.</p>
+                    <div class="profile-gallery-card card">
+                        <h3><i class="fas fa-images"></i> Galería de Fotos</h3>
+                        <div id="galleryPhotos" class="gallery-grid">
+                            <p class="no-photos-message">Aún no tienes fotos.</p>
+                        </div>
+                        <div class="upload-gallery-photo-area">
+                            <label for="galleryInput" class="btn btn-secondary"><i class="fas fa-plus"></i> Subir Foto</label>
+                            <input type="file" id="galleryInput" accept="image/*" multiple style="display: none;">
+                        </div>
                     </div>
-                    <div class="upload-gallery-photo-area">
-                        <label for="galleryInput" class="btn"><i class="fas fa-upload"></i> Subir Nueva Foto</label>
-                        <input type="file" id="galleryInput" accept="image/*" multiple style="display: none;">
-                        <button id="uploadGalleryBtn" style="display: none;">Subir Fotos Seleccionadas</button>
+                </aside>
+
+                <div class="profile-right-feed">
+                    <div class="post-create-area card">
+                        <h3>¿Qué estás pensando, <span id="currentUserForPost">...</span>?</h3>
+                        <textarea id="postContentInput" placeholder="Escribe tu publicación aquí..." rows="3"></textarea>
+                        <input type="file" id="postImageInput" accept="image/*" style="display: none;">
+                        <div class="post-actions">
+                            <label for="postImageInput" class="btn"><i class="fas fa-image"></i> Foto</label>
+                            <button id="publishPostBtn" class="btn-secondary" disabled>Publicar</button>
+                        </div>
+                        <div id="imagePreviewContainer" style="display: none; margin-top: 15px;">
+                            <img id="imagePreview" src="#" alt="Vista previa de la imagen" style="max-width: 100%; height: auto; border-radius: 8px;">
+                        </div>
                     </div>
+
+                    <div id="user-posts-feed" class="post-feed">
+                        </div>
                 </div>
-            </div>
+            </section>
         </div>
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2024 Mi Aplicación de Citas. Todos los derechos reservados.</p>
+        </footer>
+
+    <div id="editProfileModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Editar Perfil</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="usernameInput">Nombre de Usuario:</label>
+                    <input type="text" id="usernameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="bioInput">Biografía:</label>
+                    <textarea id="bioInput" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ageInput">Edad:</label>
+                    <input type="number" id="ageInput" min="18">
+                </div>
+                <div class="form-group">
+                    <label for="genderSelect">Género:</label>
+                    <select id="genderSelect">
+                        <option value="">Selecciona tu género</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="locationInput">Ubicación:</label>
+                    <input type="text" id="locationInput">
+                </div>
+                <div class="form-group">
+                    <label for="interestsInput">Intereses:</label>
+                    <input type="text" id="interestsInput">
+                </div>
+                <button type="submit" id="saveProfileBtn">Guardar Cambios</button>
+            </form>
         </div>
-    </footer>
+    </div>
 
     <script type="module" src="scripts/supabase.js"></script>
     <script type="module" src="scripts/mi-perfil.js"></script>

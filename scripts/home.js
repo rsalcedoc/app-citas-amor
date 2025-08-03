@@ -2,7 +2,7 @@
 
 import { supabase } from './supabase.js';
 
-// Referencias a elementos del DOM
+// Referencias a elementos del DOM (existentes)
 const logoutButton = document.getElementById('logout');
 const dropbtn = document.querySelector('.dropbtn');
 const dropdownContent = document.querySelector('.dropdown-content');
@@ -13,7 +13,21 @@ const postsFeed = document.getElementById('postsFeed');
 const friendRequestsList = document.getElementById('friendRequestsList');
 const peopleSuggestionsList = document.getElementById('peopleSuggestionsList');
 
+// Nuevas referencias a elementos del DOM para la creación de posts multimedia y perfil de usuario
+const currentUserAvatar = document.getElementById('currentUserAvatar');
+const currentUsernameSpan = document.getElementById('currentUsername');
+const imageUploadInput = document.getElementById('imageUpload');
+const videoUploadInput = document.getElementById('videoUpload');
+const audioUploadInput = document.getElementById('audioUpload');
+const uploadImageBtn = document.getElementById('uploadImageBtn');
+const uploadVideoBtn = document.getElementById('uploadVideoBtn');
+const uploadAudioBtn = document.getElementById('uploadAudioBtn');
+const mediaPreview = document.getElementById('mediaPreview');
+const postMessage = document.getElementById('postMessage'); // Para mensajes de feedback
+
 let currentUserId = null; // Para almacenar el ID del usuario actual
+let selectedFile = null; // Para almacenar el archivo seleccionado (imagen, video o audio)
+let fileType = null;     // Para almacenar el tipo de archivo ('image', 'video', 'audio')
 
 // --- Funciones de Utilidad ---
 
@@ -32,8 +46,64 @@ function formatTimeAgo(dateString) {
     return date.toLocaleDateString();
 }
 
-// --- Lógica de Autenticación y Carga Inicial ---
+function showMessage(msg, isError = false) {
+    postMessage.textContent = msg;
+    postMessage.classList.remove('error');
+    if (isError) {
+        postMessage.classList.add('error');
+    }
+    postMessage.style.display = 'block';
+    // Ocultar el mensaje después de 5 segundos con un fade out
+    setTimeout(() => {
+        postMessage.style.opacity = '0';
+        setTimeout(() => {
+            postMessage.style.display = 'none';
+            postMessage.style.opacity = '1'; // Resetear opacidad para la próxima vez
+        }, 500); // Duración del fade out
+    }, 4500); // 4.5 segundos antes de iniciar el fade out
+}
 
+// --- Lógica de Autenticación y Carga Inicial (CORREGIDO) ---
+
+// Esta función se encarga de verificar y crear el perfil si no existe.
+async function createOrCheckProfile(user) {
+    if (!user) return;
+
+    try {
+        const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('id', user.id)
+            .single();
+
+        // PGRST116 = "no rows found"
+        if (error && error.code === 'PGRST116') {
+            console.log("Perfil no encontrado para el usuario. Creando uno nuevo...");
+            const { error: insertError } = await supabase
+                .from('profiles')
+                .insert({
+                    id: user.id,
+                    username: user.email.split('@')[0], // Usar parte del email como nombre de usuario inicial
+                    avatar_url: null, // Puedes establecer un avatar predeterminado
+                    // ... otras columnas de tu tabla 'profiles'
+                });
+
+            if (insertError) {
+                console.error("Error al crear el perfil:", insertError.message);
+            } else {
+                console.log("Perfil creado exitosamente para el usuario:", user.email);
+            }
+        } else if (error) {
+            console.error("Error al verificar la existencia del perfil:", error.message);
+        } else {
+            console.log("El perfil del usuario ya existe.");
+        }
+    } catch (err) {
+        console.error("Un error inesperado ocurrió en createOrCheckProfile:", err);
+    }
+}
+
+// Esta es la función principal que se ejecuta al cargar la página
 async function checkAuthAndLoadData() {
     const { data: { user }, error } = await supabase.auth.getUser();
 
@@ -46,11 +116,18 @@ async function checkAuthAndLoadData() {
     currentUserId = user.id;
     console.log('Usuario autenticado:', user.email, 'ID:', currentUserId);
 
+    // PASO CRÍTICO: Primero verifica y crea el perfil si es necesario
+    await createOrCheckProfile(user);
+
+    // Luego carga el resto de los datos de la aplicación
+    displayCurrentUserProfile();
     loadPosts();
     loadFriendRequests();
     loadPeopleSuggestions();
     setupRealtimeSubscriptions();
 }
+
+
 
 // --- Funcionalidad del Menú Desplegable ---
 
@@ -66,29 +143,187 @@ window.addEventListener('click', (event) => {
     }
 });
 
-// --- Publicaciones (Feed) ---
+// --- Funcionalidad de Cerrar Sesión ---
+logoutButton.addEventListener('click', async () => {
+    const { error } = await supabase.auth.signOut();
 
-publishPostButton.addEventListener('click', async () => {
-    const content = postContentInput.value.trim();
+    if (error) {
+        console.error('Error al cerrar sesión:', error.message);
+        alert('Error al cerrar sesión: ' + error.message);
+    } else {
+        console.log('Sesión cerrada exitosamente.');
+        window.location.href = 'index.html';
+    }
+});
 
-    if (!content) {
-        alert('Por favor, escribe algo para publicar.');
+// --- Mostrar Información del Usuario Logueado (AJUSTADO) ---
+async function displayCurrentUserProfile() {
+    if (!currentUserId) {
+        console.warn('currentUserId no está disponible para mostrar el perfil.');
         return;
     }
 
-    const { data, error } = await supabase
-        .from('posts')
-        .insert([
-            { user_id: currentUserId, content: content }
-        ]);
+    const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('username, avatar_url')
+        .eq('id', currentUserId)
+        .single(); // Esto ahora debería funcionar, ya que hemos limpiado las duplicaciones
 
     if (error) {
-        console.error('Error al publicar:', error.message);
-        alert('Error al publicar: ' + error.message);
+        console.error('Error al cargar el perfil del usuario actual:', error.message);
+        currentUsernameSpan.textContent = 'Error';
+        currentUserAvatar.src = 'https://via.placeholder.com/40';
+        return;
+    }
+    currentUsernameSpan.textContent = profile.username || 'Tu Perfil';
+    currentUserAvatar.src = profile.avatar_url || 'https://via.placeholder.com/40';
+    currentUserAvatar.alt = profile.username || 'Tu Avatar';
+
+    if (profile) {
+        currentUsernameSpan.textContent = profile.username || 'Tu Perfil';
+        currentUserAvatar.src = profile.avatar_url || 'https://via.placeholder.com/40';
+        currentUserAvatar.alt = profile.username || 'Tu Avatar';
+    } else {
+        console.warn('Perfil de usuario no encontrado en la base de datos.');
+        currentUsernameSpan.textContent = 'Perfil no encontrado';
+        currentUserAvatar.src = 'https://via.placeholder.com/40';
+    }
+}
+
+// --- Manejo de la subida y previsualización de archivos (NUEVO) ---
+
+// Asignar listeners a los botones que simulan el click en el input file
+uploadImageBtn.addEventListener('click', () => imageUploadInput.click());
+uploadVideoBtn.addEventListener('click', () => videoUploadInput.click());
+uploadAudioBtn.addEventListener('click', () => audioUploadInput.click());
+
+// Asignar listeners a los inputs de tipo file para detectar cuando se selecciona un archivo
+imageUploadInput.addEventListener('change', (event) => handleFileSelect(event.target.files[0], 'image'));
+videoUploadInput.addEventListener('change', (event) => handleFileSelect(event.target.files[0], 'video'));
+audioUploadInput.addEventListener('change', (event) => handleFileSelect(event.target.files[0], 'audio'));
+
+function handleFileSelect(file, type) {
+    if (file) {
+        // Reiniciar los otros inputs para que solo uno tenga un archivo
+        imageUploadInput.value = '';
+        videoUploadInput.value = '';
+        audioUploadInput.value = '';
+
+        selectedFile = file;
+        fileType = type;
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            mediaPreview.innerHTML = ''; // Limpiar previsualización anterior
+            let mediaElement;
+
+            if (type === 'image') {
+                mediaElement = document.createElement('img');
+                mediaElement.src = e.target.result;
+                mediaElement.alt = 'Preview';
+            } else if (type === 'video') {
+                mediaElement = document.createElement('video');
+                mediaElement.src = e.target.result;
+                mediaElement.controls = true;
+                mediaElement.autoplay = false; // No autoplay en la preview
+                mediaElement.muted = true; // Silenciar por defecto en preview
+            } else if (type === 'audio') {
+                mediaElement = document.createElement('audio');
+                mediaElement.src = e.target.result;
+                mediaElement.controls = true;
+                mediaElement.autoplay = false;
+            }
+
+            if (mediaElement) {
+                mediaPreview.appendChild(mediaElement);
+                // Añadir botón para remover el archivo
+                const removeBtn = document.createElement('button');
+                removeBtn.classList.add('remove-media-btn');
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.addEventListener('click', clearMediaSelection);
+                mediaPreview.appendChild(removeBtn);
+            }
+        };
+        reader.readAsDataURL(file);
+    } else {
+        clearMediaSelection();
+    }
+}
+
+function clearMediaSelection() {
+    selectedFile = null;
+    fileType = null;
+    mediaPreview.innerHTML = '';
+    imageUploadInput.value = ''; // Resetear el input file para que se pueda seleccionar el mismo archivo de nuevo
+    videoUploadInput.value = '';
+    audioUploadInput.value = '';
+}
+
+
+// --- Publicaciones (Feed) - CORREGIDO el nombre del bucket ---
+
+// ... (código anterior) ...
+
+publishPostButton.addEventListener('click', async () => {
+    // ... (tu código para el contenido y el archivo seleccionado) ...
+
+    let mediaUrl = null;
+    let postMediaType = null;
+    const bucketName = 'post-media'; // Asegúrate de que este es el nombre correcto
+
+    if (selectedFile) {
+        // Generar un nombre único para el archivo
+        // Ahora se usa solo el nombre del archivo, sin la carpeta del usuario en el path
+        const filePath = `${Date.now()}-${selectedFile.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+
+        const { data, error: uploadError } = await supabase.storage
+            .from(bucketName)
+            .upload(filePath, selectedFile, {
+                cacheControl: '3600',
+                upsert: false
+            });
+
+        if (uploadError) {
+            console.error('Error al subir el archivo:', uploadError.message);
+            showMessage('Error al subir el archivo: ' + uploadError.message, true);
+            publishPostButton.disabled = false;
+            publishPostButton.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar';
+            return;
+        }
+
+        // Obtener la URL pública del archivo subido
+        const { data: publicUrlData } = supabase.storage
+            .from(bucketName)
+            .getPublicUrl(filePath);
+
+        mediaUrl = publicUrlData.publicUrl;
+        postMediaType = fileType;
+        console.log('Archivo subido, URL:', mediaUrl);
+    }
+
+    // Insertar la publicación en la base de datos (con o sin media)
+    const { data: postData, error: insertError } = await supabase
+        .from('posts')
+        .insert([
+            {
+                user_id: currentUserId,
+                content: content,
+                media_url: mediaUrl,
+                media_type: postMediaType
+            }
+        ]);
+
+    if (insertError) {
+        console.error('Error al publicar:', insertError.message);
+        showMessage('Error al publicar: ' + insertError.message, true);
     } else {
         postContentInput.value = '';
+        clearMediaSelection();
+        showMessage('✅ Publicación exitosa.', false);
         console.log('Publicación exitosa.');
     }
+    publishPostButton.disabled = false;
+    publishPostButton.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar';
 });
 
 async function loadPosts() {
@@ -119,6 +354,21 @@ async function loadPosts() {
         const avatarUrl = post.profiles?.avatar_url || 'https://via.placeholder.com/40';
         const username = post.profiles?.username || 'Usuario Desconocido';
 
+        let mediaHtml = '';
+        if (post.media_url && post.media_type) {
+            if (post.media_type === 'image') {
+                mediaHtml = `<div class="post-media"><img src="${post.media_url}" alt="Publicación"></div>`;
+            } else if (post.media_type === 'video') {
+                mediaHtml = `<div class="post-media"><video src="${post.media_url}" controls></video></div>`;
+            } else if (post.media_type === 'audio') {
+                mediaHtml = `<div class="post-media"><audio src="${post.media_url}" controls></audio></div>`;
+            }
+        }
+
+        // Contenido de texto: si no hay contenido pero sí multimedia, se usa un string vacío.
+        // Esto previene que muestre 'null' o 'undefined' en el HTML.
+        const postTextContent = post.content ? `<p>${post.content}</p>` : '';
+
         postElement.innerHTML = `
             <div class="post-header">
                 <img src="${avatarUrl}" alt="${username}" class="post-avatar">
@@ -128,14 +378,15 @@ async function loadPosts() {
                 </div>
             </div>
             <div class="post-content">
-                <p>${post.content}</p>
+                ${postTextContent}
+                ${mediaHtml}
             </div>
         `;
         postsFeed.appendChild(postElement);
     });
 }
 
-// --- Solicitudes de Amistad y Gestión de Amistades ---
+// --- Solicitudes de Amistad y Gestión de Amistades (Existente, sin cambios funcionales) ---
 
 async function loadFriendRequests() {
     friendRequestsList.innerHTML = '<p class="no-requests-message">Cargando solicitudes...</p>';
@@ -186,6 +437,7 @@ async function loadFriendRequests() {
     });
 }
 
+
 async function handleFriendRequestAction(requestId, status, senderId = null) {
     const { error: updateError } = await supabase
         .from('friend_requests')
@@ -201,33 +453,48 @@ async function handleFriendRequestAction(requestId, status, senderId = null) {
     console.log(`Solicitud ${status} exitosamente.`);
 
     if (status === 'accepted' && senderId) {
-        // Al aceptar, insertamos la amistad en la tabla 'friendships'
-        const { error: friendshipError } = await supabase
+        // Asegúrate de que no exista ya una amistad para evitar duplicados
+        const { data: existingFriendship, error: checkError } = await supabase
             .from('friendships')
-            .insert([
-                { user1_id: currentUserId, user2_id: senderId }
-            ]);
+            .select('*')
+            .or(`and(user1_id.eq.${currentUserId},user2_id.eq.${senderId}),and(user1_id.eq.${senderId},user2_id.eq.${currentUserId})`);
 
-        if (friendshipError) {
-            console.error('Error al establecer amistad:', friendshipError.message);
-            alert('Error al establecer amistad: ' + friendshipError.message);
+        if (checkError) {
+            console.error('Error al verificar amistad existente:', checkError.message);
+            return;
+        }
+
+        if (existingFriendship && existingFriendship.length === 0) {
+            const { error: friendshipError } = await supabase
+                .from('friendships')
+                .insert([
+                    { user1_id: currentUserId, user2_id: senderId }
+                ]);
+
+            if (friendshipError) {
+                console.error('Error al establecer amistad:', friendshipError.message);
+                alert('Error al establecer amistad: ' + friendshipError.message);
+            } else {
+                console.log(`Amistad entre ${currentUserId} y ${senderId} establecida.`);
+                // alert('¡Amistad establecida!'); // Comentado para evitar popups excesivos
+            }
         } else {
-            console.log(`Amistad entre ${currentUserId} y ${senderId} establecida.`);
-            alert('¡Amistad establecida!');
+            console.log('Amistad ya existe o ha sido manejada previamente.');
         }
     }
 
     loadFriendRequests();
-    loadPeopleSuggestions(); // Recargar sugerencias, ya que un usuario puede haber pasado a ser amigo
+    loadPeopleSuggestions();
 }
+
+
 
 // --- Sugerencias de Personas ---
 
 async function loadPeopleSuggestions() {
     peopleSuggestionsList.innerHTML = '<p class="no-suggestions-message">Cargando sugerencias...</p>';
 
-    // Obtener IDs de usuarios con los que ya hay una relación (amigos o solicitudes pendientes)
-    // 1. Amigos actuales del usuario
+    // Paso 1: Obtener IDs de amigos actuales
     const { data: friendships, error: friendError } = await supabase
         .from('friendships')
         .select('user1_id, user2_id')
@@ -235,36 +502,83 @@ async function loadPeopleSuggestions() {
 
     if (friendError) {
         console.error('Error al obtener amistades:', friendError.message);
+        peopleSuggestionsList.innerHTML = '<p class="no-suggestions-message error">Error al cargar sugerencias.</p>';
         return;
     }
-    const friendIds = friendships.flatMap(f => [f.user1_id, f.user2_id]).filter(id => id !== currentUserId);
 
-
-    // 2. Usuarios con solicitudes pendientes (enviadas o recibidas)
+    // Paso 2: Obtener IDs de solicitudes pendientes (enviadas o recibidas)
     const { data: requests, error: requestError } = await supabase
         .from('friend_requests')
         .select('sender_id, receiver_id')
-        .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`)
-        .eq('status', 'pending');
+        .or(`sender_id.eq.${currentUserId},receiver_id.eq.${currentUserId}`);
 
     if (requestError) {
         console.error('Error al obtener solicitudes pendientes:', requestError.message);
-        return;
+        // No es un error fatal para mostrar sugerencias, pero lo registramos
+        // Podrías decidir si quieres retornar aquí o continuar sin considerar estas solicitudes.
     }
-    const requestedIds = requests.flatMap(r => [r.sender_id, r.receiver_id]).filter(id => id !== currentUserId);
 
-    // Combinar IDs para exclusión
-    const excludedIds = [...new Set([...friendIds, ...requestedIds, currentUserId])];
+    // Paso 3: Construir un Set de IDs a excluir (amigos, solicitudes pendientes, y el propio usuario)
+    const excludedIds = new Set();
+    excludedIds.add(currentUserId); // Siempre excluir al usuario actual
 
-    // Consultar perfiles, excluyendo al usuario actual y a los que ya tienen relación
-    const { data: profiles, error } = await supabase
+    friendships.forEach(f => {
+        excludedIds.add(f.user1_id);
+        excludedIds.add(f.user2_id);
+    });
+
+    if (requests) { // Asegúrate de que 'requests' no sea null si hubo un error al cargarlas
+        requests.forEach(r => {
+            excludedIds.add(r.sender_id);
+            excludedIds.add(r.receiver_id);
+        });
+    }
+
+    // Convertir el Set a un Array para el filtro 'in' de Supabase
+    const excludedIdsArray = Array.from(excludedIds);
+
+    // Paso 4: Obtener perfiles que NO estén en la lista de excluidos
+    let query = supabase
         .from('profiles')
-        .select('id, username, avatar_url')
-        .not('id', 'in', `(${excludedIds.join(',')})`) // Excluir IDs combinados
-        .limit(5);
+        .select('id, username, avatar_url');
 
-    if (error) {
-        console.error('Error al cargar sugerencias de personas:', error.message);
+    // Solo aplica el filtro 'not.in' si hay IDs para excluir.
+    // Si excludedIdsArray solo contiene el currentUserId, Supabase no necesita un 'not.in' complejo,
+    // ya que el 'neq' ya lo cubre. Pero 'not.in' con un solo elemento también debería funcionar.
+    // El problema es cuando el array de 'in' está vacío o mal formado.
+    // La mejor práctica es siempre asegurarse de que el array del 'in' contenga al menos el currentUserId,
+    // lo cual ya hacemos. El error "failed to parse filter" sugiere que el string URL se está generando mal.
+    // Una posible solución es usar `neq` para el currentUserId, y luego `not.in` para el resto,
+    // o simplemente asegurarse que el array para `not.in` nunca esté vacío.
+
+    // Dada la traza del error `not.in.7539ff59-e5c7-...`, Supabase está interpretando el filtro como `not.in.<ID1>,<ID2>,...`
+    // Si el array está vacío o solo con un elemento, es posible que el string `not.in.` se forme incorrectamente.
+    // Vamos a forzar que la lista de IDs para 'in' sea siempre un array válido, incluso si solo contiene el user_id.
+
+    // La sintaxis `not('id', 'in', excludedIdsArray)` ya debería manejar esto,
+    // pero si el error persiste, la siguiente lógica es más explícita:
+
+    if (excludedIdsArray.length > 0) { // Si hay IDs para excluir
+        query = query.not('id', 'in', `(${excludedIdsArray.join(',')})`); // Usa un string formateado
+    }
+    // Nota: La sintaxis `not('id', 'in', excludedIdsArray)` (pasando el array directamente) es la recomendada por Supabase
+    // y debería funcionar. Si da error, es posible que la versión del SDK o el servidor tenga un quirk.
+    // El cambio `(${excludedIdsArray.join(',')})` es un intento de forzar el formato de cadena esperado.
+
+    // Una alternativa más segura para el filtro si el `not.in` sigue dando problemas:
+    // let profilesToExclude = Array.from(excludedIds);
+    // if (profilesToExclude.length > 0) {
+    //     // Construir una cláusula OR para excluir cada ID individualmente si `not.in` falla.
+    //     // Esto es menos eficiente pero más robusto si hay un bug en el cliente/servidor de Supabase.
+    //     const orConditions = profilesToExclude.map(id => `id.neq.${id}`).join(',');
+    //     query = query.or(orConditions);
+    // }
+
+
+    const { data: profiles, error: profilesError } = await query.limit(5); // Limitar a unas pocas sugerencias
+
+    if (profilesError) {
+        console.error('Error al cargar perfiles sugeridos:', profilesError.message);
         peopleSuggestionsList.innerHTML = '<p class="no-suggestions-message error">Error al cargar sugerencias.</p>';
         return;
     }
@@ -279,90 +593,37 @@ async function loadPeopleSuggestions() {
         const suggestionElement = document.createElement('div');
         suggestionElement.classList.add('person-suggestion-item');
 
-        const avatarUrl = profile.avatar_url || 'https://via.placeholder.com/50';
+        const avatar = profile.avatar_url || 'https://via.placeholder.com/50';
+        const username = profile.username || 'Usuario Desconocido';
 
         suggestionElement.innerHTML = `
-            <img src="${avatarUrl}" alt="${profile.username}" class="suggestion-avatar">
+            <img src="${avatar}" alt="${username}" class="suggestion-avatar">
             <div class="suggestion-info">
-                <span class="suggestion-username">${profile.username}</span>
+                <span class="suggestion-username">${username}</span>
             </div>
             <div class="suggestion-actions">
-                <button class="add-friend-btn" data-receiver-id="${profile.id}">Agregar</button>
+                <button class="send-request-btn" data-receiver-id="${profile.id}">Añadir</button>
             </div>
         `;
         peopleSuggestionsList.appendChild(suggestionElement);
     });
 
-    peopleSuggestionsList.querySelectorAll('.add-friend-btn').forEach(button => {
-        button.addEventListener('click', (e) => sendFriendRequest(e.target.dataset.receiverId));
+    peopleSuggestionsList.querySelectorAll('.send-request-btn').forEach(button => {
+        button.addEventListener('click', (e) => sendFriendRequest(e.target.dataset.receiverId, e.target));
     });
 }
 
-async function sendFriendRequest(receiverId) {
-    // Es buena práctica deshabilitar el botón temporalmente
-    const targetButton = event.target; // Captura el botón que fue clickeado
-    if (targetButton) {
-        targetButton.disabled = true;
-        targetButton.textContent = 'Enviando...';
-    }
+// ... (resto de tu código) ...
 
-    // Verificar si ya existe una solicitud pendiente o amistad antes de enviar
-    const { data: existingRelations, error: checkError } = await supabase
-        .from('friendships')
-        .select('id')
-        .or(`and(user1_id.eq.${currentUserId},user2_id.eq.${receiverId}),and(user1_id.eq.${receiverId},user2_id.eq.${currentUserId})`);
-    
-    if (checkError) {
-        console.error('Error al verificar amistad existente:', checkError.message);
-        alert('Error al enviar solicitud: ' + checkError.message);
-        if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Agregar'; }
-        return;
-    }
-    if (existingRelations && existingRelations.length > 0) {
-        alert('Ya eres amigo/a de este usuario.');
-        if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Amigos'; targetButton.style.backgroundColor = '#28a745'; } // Opcional: Cambiar estilo
+async function sendFriendRequest(receiverId, buttonElement) {
+    if (!currentUserId) {
+        alert('Debes iniciar sesión para enviar solicitudes de amistad.');
         return;
     }
 
-    const { data: existingRequests, error: reqCheckError } = await supabase
-        .from('friend_requests')
-        .select('id, status')
-        .or(`and(sender_id.eq.${currentUserId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${currentUserId})`);
-    
-    if (reqCheckError) {
-        console.error('Error al verificar solicitud pendiente:', reqCheckError.message);
-        alert('Error al enviar solicitud: ' + reqCheckError.message);
-        if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Agregar'; }
-        return;
-    }
-    if (existingRequests && existingRequests.length > 0) {
-        const req = existingRequests[0];
-        if (req.status === 'pending') {
-            alert('Ya existe una solicitud de amistad pendiente con este usuario.');
-            if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Pendiente'; targetButton.style.backgroundColor = '#ffc107'; }
-        } else if (req.status === 'accepted') { // Por si acaso, si no se filtró bien antes
-            alert('Ya eres amigo/a de este usuario.');
-            if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Amigos'; targetButton.style.backgroundColor = '#28a745'; }
-        } else { // Si es rejected, podemos re-enviar
-             const { error: insertError } = await supabase
-                .from('friend_requests')
-                .insert([{ sender_id: currentUserId, receiver_id: receiverId, status: 'pending' }]);
-            
-            if (insertError) {
-                console.error('Error al reenviar solicitud de amistad:', insertError.message);
-                alert('Error al enviar solicitud: ' + insertError.message);
-                if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Agregar'; }
-            } else {
-                alert('Solicitud de amistad enviada con éxito.');
-                if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Pendiente'; targetButton.style.backgroundColor = '#ffc107'; }
-                loadPeopleSuggestions();
-            }
-        }
-        return;
-    }
+    buttonElement.disabled = true;
+    buttonElement.textContent = 'Enviando...';
 
-
-    // Si no hay relaciones ni solicitudes pendientes, se envía la solicitud
     const { data, error } = await supabase
         .from('friend_requests')
         .insert([
@@ -372,60 +633,64 @@ async function sendFriendRequest(receiverId) {
     if (error) {
         console.error('Error al enviar solicitud de amistad:', error.message);
         alert('Error al enviar solicitud: ' + error.message);
-        if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Agregar'; }
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Añadir';
     } else {
-        alert('Solicitud de amistad enviada con éxito.');
-        if (targetButton) { targetButton.disabled = false; targetButton.textContent = 'Pendiente'; targetButton.style.backgroundColor = '#ffc107'; }
-        loadPeopleSuggestions(); // Recargar sugerencias para actualizar el estado del botón
+        alert('Solicitud de amistad enviada!');
+        buttonElement.textContent = 'Solicitud Enviada';
+        // No deshabilitar el botón si ya está enviado, para evitar múltiples clics
+        // Recargamos las sugerencias para que ese usuario desaparezca
+        loadPeopleSuggestions();
     }
 }
 
 
-// --- Realtime Subscriptions (para actualizaciones en vivo) ---
+// --- Suscripciones en Tiempo Real (Existente) ---
 
 function setupRealtimeSubscriptions() {
+    // Suscripción para nuevas publicaciones
     supabase
-        .channel('public:posts')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, payload => {
-            console.log('Cambio en posts recibido!', payload);
-            loadPosts();
+        .channel('posts_feed')
+        .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'posts'
+        }, payload => {
+            console.log('Nueva publicación en tiempo real:', payload);
+            loadPosts(); // Recargar todos los posts para incluir el nuevo
         })
         .subscribe();
 
-    // Filtra las notificaciones para solicitudes de amistad que me conciernen
+    // Suscripción para solicitudes de amistad (INSERT y UPDATE para cambios de estado)
     supabase
-        .channel('public:friend_requests')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'friend_requests', filter: `receiver_id=eq.${currentUserId}` }, payload => {
-            console.log('Cambio en friend_requests recibido!', payload);
+        .channel('friend_requests_channel')
+        .on('postgres_changes', {
+            event: '*', // INSERT, UPDATE, DELETE
+            schema: 'public',
+            table: 'friend_requests',
+            filter: `receiver_id=eq.${currentUserId}` // Solo para el usuario actual como receptor
+        }, payload => {
+            console.log('Cambio en solicitudes de amistad:', payload);
             loadFriendRequests();
-            loadPeopleSuggestions();
+            loadPeopleSuggestions(); // También recargar sugerencias, ya que el estado de amistad cambia
         })
         .subscribe();
 
-    // Filtra las notificaciones para amistades que me conciernen
-    // Para que las sugerencias y el estado de los amigos se actualice si alguien me acepta o elimina
+    // Suscripción para nuevas amistades (para cargar sugerencias si alguien se hace amigo)
     supabase
-        .channel('public:friendships')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'friendships', filter: `user1_id=eq.${currentUserId}||user2_id=eq.${currentUserId}` }, payload => {
-            console.log('Cambio en friendships recibido!', payload);
-            // Si hay cambios en amistades, recargar sugerencias para reflejar quién es amigo
-            loadPeopleSuggestions();
+        .channel('friendships_channel')
+        .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'friendships',
+            filter: `user1_id=eq.${currentUserId}|user2_id=eq.${currentUserId}`
+        }, payload => {
+            console.log('Nueva amistad:', payload);
+            loadPeopleSuggestions(); // Recargar sugerencias si se forma una nueva amistad
         })
         .subscribe();
 }
 
-// --- Event Listeners Globales ---
 
-logoutButton.addEventListener('click', async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error('Error al cerrar sesión:', error.message);
-        alert('Hubo un error al cerrar sesión. Inténtalo de nuevo.');
-    } else {
-        window.location.href = 'index.html';
-    }
-});
-
-
-// Iniciar la verificación de autenticación y carga de datos al cargar el DOM
+// --- Inicialización al cargar el DOM ---
 document.addEventListener('DOMContentLoaded', checkAuthAndLoadData);

@@ -1,0 +1,52 @@
+/* Estilos específicos para la página de perfil */
+.profile-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-color);
+}
+.profile-info h2 {
+    margin: 0;
+    font-size: 2.5em;
+    color: var(--text-color);
+}
+.profile-posts {
+    margin-top: 30px;
+}
+.profile-posts h3 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+/* Estilos para los posts del perfil */
+.profile-post-item {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.no-content-message {
+    text-align: center;
+    color: var(--light-text-color);
+    padding: 20px;
+    font-style: italic;
+}

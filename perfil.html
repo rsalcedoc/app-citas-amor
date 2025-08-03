@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Privado - Mi Aplicación de Citas</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <title>Perfil de Usuario</title>
     <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
     <header>
         <div class="container header-content">
             <a href="home.html" class="logo">Mi App de Citas</a>
@@ -38,42 +39,31 @@
     </header>
 
     <main>
-    <div class="chat-container">
-
-        <div class="chat-sidebar">
-            <div class="friend-list-header">
-                <h3>Amigos</h3>
-            </div>
-            <div id="friendList" class="friend-list">
-                <p class="loading-message">Cargando amigos...</p>
-            </div>
-        </div>
-
-        <div class="chat-main">
-            <a href="#" class="chat-header profile-link">
-                <img id="chatRecipientAvatar" src="https://via.placeholder.com/60" alt="Avatar del amigo" class="chat-recipient-avatar">
-                <span id="chatRecipientName" class="chat-recipient-name">Selecciona un amigo</span>
-            </a>
-            
-            <div id="messagesDisplay" class="messages-container">
-                <p class="no-messages-message">Selecciona un amigo para empezar a chatear.</p>
+        <div class="profile-container">
+            <div class="profile-header">
+                <img id="profileAvatar" class="profile-avatar" src="https://via.placeholder.com/120" alt="Avatar del usuario">
+                <div class="profile-info">
+                    <h2 id="profileUsername">Cargando...</h2>
+                    <p>ID de Usuario: <span id="profileUserId"></span></p>
+                </div>
             </div>
             
-            <div class="chat-input-area">
-                <textarea id="messageInput" placeholder="Escribe un mensaje..." disabled></textarea>
-                <button id="sendMessageButton" disabled>Enviar</button>
+            <div class="profile-posts">
+                <h3>Publicaciones</h3>
+                <div id="postsContainer">
+                    <p class="no-content-message">Cargando publicaciones...</p>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-
+    </main>
+    
     <footer>
         <div class="container">
-            <p>&copy; 2024 Mi Aplicación de Citas. Todos los derechos reservados.</p>
+            <p>&copy; 2025 Mi App. Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <script type="module" src="scripts/supabase.js"></script>
-    <script type="module" src="scripts/chat.js"></script>
+    
+    <script type="module" src="scripts/profile.js"></script>
+    <script type="module" src="scripts/supabase.js"></script>    
 </body>
 </html>

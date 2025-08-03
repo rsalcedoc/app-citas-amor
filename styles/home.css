@@ -5,7 +5,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0; /* Padding movido al main para el efecto de borde a borde */
+    padding: 0;
     background: linear-gradient(270deg, #ff9a9e, #fad0c4, #84fab0, #a1c4fd, #c2e9fb, #a7d8d8);
     background-size: 1200% 1200%;
     animation: gradientShift 30s ease infinite;
@@ -20,15 +20,15 @@ body {
 
 header {
     width: 100%;
-    background: rgba(255, 255, 255, 0.98); /* Casi opaco */
+    background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky; /* Sticky header */
+    position: sticky;
     top: 0;
-    z-index: 1000; /* Asegurar que esté por encima de todo */
+    z-index: 1000;
     border-bottom: 1px solid #eee;
 }
 
@@ -45,9 +45,9 @@ header {
 
 /* Menú Desplegable */
 .main-nav {
-    display: flex; /* Para alinear el dropdown y el nuevo icono de configuración */
+    display: flex;
     align-items: center;
-    gap: 20px; /* Espacio entre el dropdown y el icono */
+    gap: 20px;
 }
 
 .main-nav .dropdown {
@@ -81,10 +81,11 @@ header {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 8px;
-    top: 100%; /* Justo debajo del botón */
+    top: 100%;
     left: 0;
-    margin-top: 10px; /* Pequeño espacio */
+    margin-top: 10px;
     border: 1px solid #ddd;
+    animation: fadeIn 0.3s ease-out; /* Animación al mostrar */
 }
 
 .main-nav .dropdown-content a {
@@ -99,7 +100,7 @@ header {
 }
 
 .main-nav .dropdown-content a i {
-    color: #c2185b; /* Íconos de servicios */
+    color: #c2185b;
 }
 
 .main-nav .dropdown-content a:hover {
@@ -112,24 +113,30 @@ header {
 }
 
 .main-nav .dropdown:hover .dropdown-content {
-    display: block; /* Muestra el menú al pasar el ratón */
+    display: block;
 }
 
-/* Nuevo estilo para el icono de configuración directamente en el nav */
+/* Animación de fade-in para dropdown */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icono de configuración directamente en el nav */
 .main-nav .icon-link {
-    color: #6a0dad; /* Color del icono */
-    font-size: 1.8rem; /* Tamaño del icono */
+    color: #6a0dad;
+    font-size: 1.8rem;
     text-decoration: none;
     transition: color 0.3s ease, transform 0.2s ease;
-    padding: 5px; /* Para hacer el área de clic más grande */
-    border-radius: 50%; /* Para un mejor efecto visual si se añade fondo */
-    display: flex; /* Asegura que el icono esté centrado si hay padding */
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .main-nav .icon-link:hover {
-    color: #c2185b; /* Color al pasar el ratón */
+    color: #c2185b;
     transform: scale(1.1);
 }
 
@@ -139,6 +146,36 @@ header {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+/* Estilo para el perfil del usuario logueado en el header */
+.logged-in-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 20px;
+    background-color: #f5f5f5;
+    padding: 5px 12px;
+    border-radius: 20px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.user-avatar-small {
+    width: 35px; /* Tamaño ligeramente ajustado */
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #a1c4fd;
+}
+
+.user-username-small {
+    font-weight: 600;
+    color: #6a0dad;
+    font-size: 0.95em;
+    white-space: nowrap; /* Evitar que el nombre se rompa */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Añadir puntos suspensivos si es muy largo */
+    max-width: 100px; /* Limitar ancho del nombre */
 }
 
 .social-icons {
@@ -159,12 +196,12 @@ header {
 .icon-button {
     background: none;
     border: none;
-    color: #c2185b; /* Color del ícono */
-    font-size: 1.6rem; /* Tamaño del ícono */
+    color: #c2185b;
+    font-size: 1.6rem;
     cursor: pointer;
     transition: color 0.3s ease, transform 0.2s ease;
-    padding: 5px; /* Para hacer el área de clic más grande */
-    border-radius: 50%; /* Para un mejor efecto visual si se añade fondo */
+    padding: 5px;
+    border-radius: 50%;
 }
 .icon-button:hover {
     color: #a0144d;
@@ -174,28 +211,35 @@ header {
 /* Contenido Principal (Estilo Facebook-like) */
 .main-content-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Columna principal más ancha, sidebar más estrecho */
+    grid-template-columns: 2fr 1fr;
     gap: 30px;
     width: 100%;
-    max-width: 1200px; /* Ancho máximo para el feed */
-    padding: 30px 20px; /* Padding para el contenido principal */
+    max-width: 1200px;
+    padding: 30px 20px;
     box-sizing: border-box;
 }
 
 /* Sección de Publicaciones (Feed) */
 .posts-section {
-    background-color: #f0f2f5; /* Fondo similar a Facebook */
+    background-color: #f0f2f5;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
+/* Estilos para el nuevo create-post con multimedia */
 .create-post {
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post-input-area {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -203,51 +247,146 @@ header {
 
 .create-post textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
     resize: vertical;
-    min-height: 60px;
+    min-height: 80px;
     font-family: 'Poppins', sans-serif;
-    font-size: 1em;
+    font-size: 1.05em;
     box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.create-post button {
-    background-color: #6a0dad;
-    color: white;
-    padding: 10px 15px;
-    border: none;
+.create-post textarea:focus {
+    border-color: #a1c4fd;
+    box-shadow: 0 0 0 3px rgba(161, 196, 253, 0.3);
+    outline: none;
+}
+
+.media-preview {
+    margin-top: 10px;
+    border: 1px dashed #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    background-color: #f8f8f8;
+}
+
+.media-preview img, .media-preview video, .media-preview audio {
+    max-width: 100%;
+    max-height: 200px;
     border-radius: 6px;
+    display: block;
+}
+
+.media-preview audio {
+    width: 100%;
+}
+
+.media-preview .remove-media-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 0,0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+.media-preview .remove-media-btn:hover {
+    background-color: rgba(255, 0,0, 0.9);
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.action-btn, .publish-btn {
+    background-color: #f0f2f5;
+    color: #6a0dad;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
     font-weight: 500;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
+    flex-grow: 1;
+    justify-content: center;
 }
 
-.create-post button:hover {
-    background-color: #7b1fa2;
+.action-btn:hover:not(:disabled) {
+    background-color: #e6e8eb;
+    color: #c2185b;
     transform: translateY(-1px);
 }
 
-.posts-feed .loading-message {
+.action-btn:disabled, .publish-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.publish-btn {
+    background-color: #6a0dad;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.05em;
+    border: none;
+    flex-grow: 2;
+}
+
+.publish-btn:hover:not(:disabled) {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.post-message {
     text-align: center;
-    color: #666;
-    font-style: italic;
-    margin-top: 20px;
+    font-size: 0.9em;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #e0f7fa;
+    color: #00796b;
+    border: 1px solid #00bcd4;
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+.post-message.error {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border-color: #ef5350;
 }
 
 /* Estilo para una publicación individual (se añadirá con JS) */
 .post-item {
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    animation: fadeIn 0.5s ease-out; /* Animación para posts */
 }
 
 .post-header {
@@ -269,6 +408,10 @@ header {
     font-weight: 600;
     color: #6a0dad;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+.post-user-info .post-username:hover {
+    color: #c2185b;
 }
 
 .post-user-info .post-timestamp {
@@ -280,6 +423,26 @@ header {
     font-size: 1em;
     line-height: 1.5;
     color: #444;
+    margin-top: 15px;
+}
+
+.post-media {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.post-media img, .post-media video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-media audio {
+    width: 100%;
+    margin-top: 10px;
 }
 
 /* Sidebar */
@@ -288,6 +451,9 @@ header {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    display: flex; /* Añadido para organizar secciones en el sidebar */
+    flex-direction: column; /* Apilar secciones */
+    gap: 20px; /* Espacio entre secciones del sidebar */
 }
 
 .sidebar section {
@@ -295,8 +461,25 @@ header {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; (Eliminado, se maneja con gap en el padre) */
+    animation: slideInRight 0.5s ease-out forwards; /* Animación de entrada */
+    opacity: 0; /* Ocultar inicialmente para la animación */
 }
+
+/* Retraso para la animación de las secciones del sidebar */
+.sidebar section:nth-child(1) { animation-delay: 0.1s; }
+.sidebar section:nth-child(2) { animation-delay: 0.2s; }
+.sidebar section:nth-child(3) { animation-delay: 0.3s; }
+.sidebar section:nth-child(4) { animation-delay: 0.4s; }
+.sidebar section:nth-child(5) { animation-delay: 0.5s; }
+.sidebar section:nth-child(6) { animation-delay: 0.6s; }
+
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
 
 .sidebar h2 {
     font-size: 1.2em;
@@ -314,24 +497,32 @@ header {
 }
 
 .requests-list .no-requests-message,
-.suggestions-list .no-suggestions-message {
+.suggestions-list .no-suggestions-message,
+.empty-section-message, /* Nuevo estilo para mensajes de secciones vacías */
+.notifications-list .no-notifications-message {
     color: #777;
     font-style: italic;
     text-align: center;
     padding: 10px 0;
 }
 
-/* Estilo para solicitud de amistad individual (se añadirá con JS) */
+/* Estilo para solicitud de amistad individual */
 .friend-request-item {
     display: flex;
     align-items: center;
     gap: 15px;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
 }
 .friend-request-item:last-child {
     border-bottom: none;
 }
+.friend-request-item:hover {
+    background-color: #f9f9f9;
+    border-radius: 5px; /* Para que el hover se vea mejor */
+}
+
 
 .request-avatar {
     width: 50px;
@@ -362,35 +553,42 @@ header {
     cursor: pointer;
     font-size: 0.85em;
     font-weight: 500;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .request-actions .accept-btn {
-    background-color: #28a745; /* Verde */
+    background-color: #28a745;
     color: white;
 }
 .request-actions .accept-btn:hover {
     background-color: #218838;
+    transform: translateY(-1px);
 }
 
 .request-actions .reject-btn {
-    background-color: #dc3545; /* Rojo */
+    background-color: #dc3545;
     color: white;
 }
 .request-actions .reject-btn:hover {
     background-color: #c82333;
+    transform: translateY(-1px);
 }
 
-/* Estilo para sugerencia de persona individual (se añadirá con JS) */
+/* Estilo para sugerencia de persona individual */
 .person-suggestion-item {
     display: flex;
     align-items: center;
     gap: 15px;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
 }
 .person-suggestion-item:last-child {
     border-bottom: none;
+}
+.person-suggestion-item:hover {
+    background-color: #f9f9f9;
+    border-radius: 5px;
 }
 
 .suggestion-avatar {
@@ -417,12 +615,17 @@ header {
     cursor: pointer;
     font-size: 0.85em;
     font-weight: 500;
-    background-color: #a1c4fd; /* Azul claro */
+    background-color: #a1c4fd;
     color: #333;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
-.suggestion-actions button:hover {
+.suggestion-actions button:hover:not(:disabled) {
     background-color: #8bb2f0;
+    transform: translateY(-1px);
+}
+.suggestion-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 
@@ -441,21 +644,32 @@ footer {
 /* Media Queries para Responsividad */
 @media (max-width: 992px) {
     .main-content-grid {
-        grid-template-columns: 1fr; /* Una sola columna en tablets */
+        grid-template-columns: 1fr;
         padding: 20px;
     }
     .sidebar {
         margin-top: 20px;
+        flex-direction: row; /* En tablets, poner las secciones del sidebar en fila si hay espacio */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .sidebar section {
+        flex: 1 1 calc(50% - 20px); /* Dos columnas para secciones del sidebar */
+        min-width: 280px; /* Ancho mínimo para cada sección */
     }
     header {
         padding: 15px 20px;
-        flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+        flex-wrap: wrap;
         gap: 15px;
     }
     .header-left, .main-nav, .header-right {
-        width: 100%; /* Ocupan todo el ancho */
-        justify-content: center; /* Centrar elementos */
+        width: 100%;
+        justify-content: center;
         text-align: center;
+    }
+    .logged-in-user-info {
+        margin-right: 0;
+        margin-bottom: 10px; /* Espacio si se apilan elementos */
     }
     .main-nav .dropdown {
         width: 100%;
@@ -467,13 +681,21 @@ footer {
     .main-nav .dropdown-content {
         left: 50%;
         transform: translateX(-50%);
-        min-width: unset; /* Quitar min-width fijo */
-        width: 90%; /* Ajustar ancho para móviles */
-        max-width: 300px; /* Límite */
+        min-width: unset;
+        width: 90%;
+        max-width: 300px;
     }
     /* Asegurar que el icono de configuración también se centre */
     .main-nav .icon-link {
         width: 100%;
+    }
+    .post-actions {
+        flex-direction: row; /* Volver a fila si hay espacio */
+        justify-content: space-around;
+    }
+    .action-btn, .publish-btn {
+        flex-grow: 1; /* Permitir crecer */
+        width: auto;
     }
 }
 
@@ -495,11 +717,23 @@ footer {
     }
     .create-post textarea {
         min-height: 50px;
+        font-size: 0.95em;
+    }
+    .post-actions {
+        flex-direction: column; /* Apilar botones en móviles */
+    }
+    .action-btn, .publish-btn {
+        width: 100%;
+        flex-grow: unset;
+    }
+    .publish-btn {
+        padding: 10px 15px;
+        font-size: 1em;
     }
     .post-item, .friend-request-item, .person-suggestion-item {
         padding: 12px;
     }
-    .post-avatar, .request-avatar, .suggestion-avatar {
+    .post-avatar, .request-avatar, .suggestion-avatar, .user-avatar-small {
         width: 35px;
         height: 35px;
     }
@@ -510,4 +744,17 @@ footer {
         padding: 6px 10px;
         font-size: 0.8em;
     }
+    .sidebar {
+        flex-direction: column; /* Apilar secciones una vez más en móviles pequeños */
+    }
+    .sidebar section {
+        flex: unset;
+        width: 100%;
+    }
+}
+.post-media img {
+    max-width: 100%; /* Para que la imagen se ajuste al contenedor */
+    height: auto;   /* Para mantener la proporción */
+    display: block; /* Para eliminar espacios extra */
+    /* background-color: gray; /* Para ver si el espacio está ahí */
 }

@@ -7,10 +7,16 @@ const logoutButton = document.getElementById('logout');
 const dropbtn = document.querySelector('.dropbtn');
 const dropdownContent = document.querySelector('.dropdown-content');
 
+// Elementos de la cabecera del perfil
 const profileAvatar = document.getElementById('profileAvatar');
 const profileUsername = document.getElementById('profileUsername');
 const profileBio = document.getElementById('profileBio');
+const coverPhoto = document.getElementById('coverPhoto');
+const editProfileBtn = document.getElementById('editProfileBtn');
 
+// Elementos del modal de edición
+const editProfileModal = document.getElementById('editProfileModal');
+const closeButton = editProfileModal.querySelector('.close-button');
 const profileForm = document.getElementById('profileForm');
 const usernameInput = document.getElementById('usernameInput');
 const bioInput = document.getElementById('bioInput');
@@ -20,13 +26,27 @@ const locationInput = document.getElementById('locationInput');
 const interestsInput = document.getElementById('interestsInput');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
 
-const avatarInput = document.getElementById('avatarInput');
+// Elementos de la barra lateral izquierda
+const genderInfo = document.getElementById('genderInfo');
+const ageInfo = document.getElementById('ageInfo');
+const locationInfo = document.getElementById('locationInfo');
 const galleryPhotos = document.getElementById('galleryPhotos');
 const galleryInput = document.getElementById('galleryInput');
-const uploadGalleryBtn = document.getElementById('uploadGalleryBtn');
 
+// Elementos del área de publicaciones
+const currentUserForPost = document.getElementById('currentUserForPost');
+const postContentInput = document.getElementById('postContentInput');
+const postImageInput = document.getElementById('postImageInput');
+const publishPostBtn = document.getElementById('publishPostBtn');
+const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+const imagePreview = document.getElementById('imagePreview');
+const userPostsFeed = document.getElementById('user-posts-feed');
+
+// Variables globales
 let currentUserId = null;
-const SUPABASE_STORAGE_BUCKET = 'avatars-and-gallery'; // Nombre del bucket que creaste
+const AVATAR_BUCKET_NAME = 'avatars';
+const GALLERY_BUCKET_NAME = 'gallery';
+const POST_MEDIA_BUCKET_NAME = 'post-media';
 
 // --- Funcionalidad del Menú Desplegable ---
 dropbtn.addEventListener('click', () => {
@@ -41,25 +61,39 @@ window.addEventListener('click', (event) => {
     }
 });
 
+// --- Manejo del Modal de Edición ---
+editProfileBtn.addEventListener('click', () => {
+    editProfileModal.style.display = 'flex';
+});
+
+closeButton.addEventListener('click', () => {
+    editProfileModal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === editProfileModal) {
+        editProfileModal.style.display = 'none';
+    }
+});
+
 // --- Carga del Perfil del Usuario ---
 async function loadUserProfile() {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
         console.warn('Usuario no autenticado, redirigiendo a la página de inicio.');
-        window.location.href = 'index.html'; // Redirige a la página de login/registro
+        window.location.href = 'index.html';
         return;
     }
 
     currentUserId = user.id;
-    console.log('Usuario autenticado en Mi Perfil:', user.email, 'ID:', currentUserId);
 
-    // Cargar datos del perfil de la tabla 'profiles'
+    // Cargar datos del perfil
     const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', currentUserId)
-        .single(); // Espera un único resultado
+        .single();
 
     if (error) {
         console.error('Error al cargar el perfil:', error.message);
@@ -68,27 +102,37 @@ async function loadUserProfile() {
     }
 
     if (profile) {
-        // Actualizar el DOM con los datos del perfil
+        // Actualizar la cabecera
         profileUsername.textContent = profile.username || 'Tu Nombre';
         profileBio.textContent = profile.bio || 'Aún no tienes biografía.';
-        profileAvatar.src = profile.avatar_url || 'https://via.placeholder.com/150'; // Avatar por defecto
+        profileAvatar.src = profile.avatar_url || 'https://via.placeholder.com/150';
 
+        // Actualizar la información en la barra lateral
+        genderInfo.textContent = profile.gender || 'N/A';
+        ageInfo.textContent = profile.age || 'N/A';
+        locationInfo.textContent = profile.location || 'N/A';
+        
+        // Cargar datos en el modal de edición
         usernameInput.value = profile.username || '';
         bioInput.value = profile.bio || '';
         ageInput.value = profile.age || '';
         genderSelect.value = profile.gender || '';
         locationInput.value = profile.location || '';
-        interestsInput.value = profile.interests || ''; // Asume que es una cadena
+        interestsInput.value = profile.interests || '';
 
-        // Cargar galería de fotos
+        // Actualizar el nombre en el área de post
+        currentUserForPost.textContent = profile.username || '...';
+        
+        // Cargar galería y posts
+        // Ahora tienes una columna 'gallery_photos' que es un JSONB
         displayGalleryPhotos(profile.gallery_photos);
+        loadUserPosts();
     }
 }
 
 // --- Guardar Cambios del Perfil ---
 profileForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evitar recarga de página
-
+    event.preventDefault();
     saveProfileBtn.disabled = true;
     saveProfileBtn.textContent = 'Guardando...';
 
@@ -109,7 +153,7 @@ profileForm.addEventListener('submit', async (event) => {
 
     if (error) {
         console.error('Error al actualizar el perfil:', error.message);
-        alert('Error al guardar los cambios: ' + error.message);
+        alert('Error al guardar: ' + error.message);
     } else {
         alert('¡Perfil actualizado exitosamente!');
         // Recargar el perfil para reflejar los cambios en el encabezado
@@ -120,214 +164,247 @@ profileForm.addEventListener('submit', async (event) => {
     saveProfileBtn.textContent = 'Guardar Cambios';
 });
 
-// --- Gestión de Avatares ---
+
+// --- Subir Avatar ---
 avatarInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Puedes mostrar un spinner o un mensaje de "subiendo"
-    profileAvatar.src = 'https://via.placeholder.com/150?text=Subiendo...'; // Placeholder temporal
-
-    const filePath = `${currentUserId}/avatar/${Date.now()}_${file.name}`; // Ruta única para el avatar
+    const fileName = `${currentUserId}-${Date.now()}`;
+    const filePath = `${fileName}`;
 
     const { data, error } = await supabase.storage
-        .from(SUPABASE_STORAGE_BUCKET)
+        .from(AVATAR_BUCKET_NAME)
         .upload(filePath, file, {
-            cacheControl: '3600', // Cache por 1 hora
-            upsert: true // Si ya existe, lo reemplaza
+            cacheControl: '3600',
+            upsert: true // Sobrescribe el archivo si ya existe
         });
 
     if (error) {
-        console.error('Error al subir avatar:', error.message);
-        alert('Error al subir avatar: ' + error.message);
-        loadUserProfile(); // Vuelve a cargar el avatar original
+        console.error('Error al subir el avatar:', error.message);
+        alert('Error al subir el avatar.');
         return;
     }
 
-    // Obtener la URL pública del archivo subido
-    const { data: publicURLData } = supabase.storage
-        .from(SUPABASE_STORAGE_BUCKET)
-        .getPublicUrl(filePath);
+    // Obtener la URL pública del avatar
+    const { data: { publicUrl } } = supabase.storage.from(AVATAR_BUCKET_NAME).getPublicUrl(filePath);
 
-    if (publicURLData && publicURLData.publicUrl) {
-        const publicUrl = publicURLData.publicUrl;
-        console.log('Avatar subido, URL:', publicUrl);
-
-        // Actualizar la URL del avatar en la tabla 'profiles'
-        const { error: updateError } = await supabase
-            .from('profiles')
-            .update({ avatar_url: publicUrl, updated_at: new Date().toISOString() })
-            .eq('id', currentUserId);
-
-        if (updateError) {
-            console.error('Error al actualizar avatar_url en la BD:', updateError.message);
-            alert('Error al guardar la URL del avatar: ' + updateError.message);
-        } else {
-            alert('¡Avatar actualizado!');
-            profileAvatar.src = publicUrl; // Muestra la nueva imagen
-        }
-    } else {
-        alert('Error al obtener la URL pública del avatar.');
-        loadUserProfile();
-    }
+    // Actualizar la tabla de perfiles con la nueva URL
+    await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', currentUserId);
+    loadUserProfile(); // Vuelve a cargar el perfil para ver el nuevo avatar
 });
 
-// --- Gestión de Galería de Fotos ---
-function displayGalleryPhotos(photosArray) {
-    galleryPhotos.innerHTML = ''; // Limpiar galería existente
-    const noPhotosMessage = document.createElement('p');
-    noPhotosMessage.classList.add('no-photos-message');
-    noPhotosMessage.textContent = 'Aún no tienes fotos en tu galería.';
 
+// --- Manejar Galería de Fotos ---
+function displayGalleryPhotos(photosArray) {
+    galleryPhotos.innerHTML = ''; // Limpia las fotos existentes
     if (!photosArray || photosArray.length === 0) {
-        galleryPhotos.appendChild(noPhotosMessage);
+        galleryPhotos.innerHTML = '<p class="no-photos-message">Aún no tienes fotos en tu galería.</p>';
         return;
     }
-
-    photosArray.forEach((photoUrl, index) => {
-        const photoDiv = document.createElement('div');
-        photoDiv.classList.add('gallery-item');
-        photoDiv.innerHTML = `
-            <img src="${photoUrl}" alt="Foto de Galería ${index + 1}">
-            <button class="delete-gallery-photo-btn" data-url="${photoUrl}"><i class="fas fa-trash"></i></button>
-        `;
-        galleryPhotos.appendChild(photoDiv);
-    });
-
-    // Añadir event listeners a los botones de eliminar
-    document.querySelectorAll('.delete-gallery-photo-btn').forEach(button => {
-        button.addEventListener('click', deleteGalleryPhoto);
+    
+    photosArray.forEach(url => {
+        const imgContainer = document.createElement('div');
+        imgContainer.classList.add('gallery-item');
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Foto de la galería';
+        imgContainer.appendChild(img);
+        galleryPhotos.appendChild(imgContainer);
     });
 }
 
-galleryInput.addEventListener('change', (event) => {
-    // Muestra el botón de subir una vez que se han seleccionado archivos
-    if (event.target.files.length > 0) {
-        uploadGalleryBtn.style.display = 'inline-block';
-    } else {
-        uploadGalleryBtn.style.display = 'none';
-    }
-});
+// Subir fotos a la galería
+galleryInput.addEventListener('change', async (event) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
 
-uploadGalleryBtn.addEventListener('click', async () => {
-    const files = galleryInput.files;
-    if (files.length === 0) return;
+    let currentGallery = [];
+    
+    // Subir cada archivo seleccionado
+    for (const file of files) {
+        const fileName = `${currentUserId}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+        const filePath = `${currentUserId}/${fileName}`;
 
-    uploadGalleryBtn.disabled = true;
-    uploadGalleryBtn.textContent = 'Subiendo...';
-
-    const currentPhotos = await getCurrentGalleryPhotos(); // Obtener fotos actuales para no sobrescribir
-
-    const uploadPromises = Array.from(files).map(async file => {
-        const filePath = `${currentUserId}/gallery/${Date.now()}_${file.name}`; // Ruta única
         const { data, error } = await supabase.storage
-            .from(SUPABASE_STORAGE_BUCKET)
-            .upload(filePath, file, { cacheControl: '3600', upsert: false }); // No upsert si quieres añadir, no reemplazar
+            .from(GALLERY_BUCKET_NAME)
+            .upload(filePath, file);
 
         if (error) {
-            console.error(`Error al subir ${file.name}:`, error.message);
-            return null; // Retorna null si hay un error
+            console.error('Error al subir una foto de galería:', error.message);
+            alert('Error al subir una foto.');
+            continue; // Continúa con el siguiente archivo
         }
 
-        const { data: publicURLData } = supabase.storage
-            .from(SUPABASE_STORAGE_BUCKET)
-            .getPublicUrl(filePath);
-
-        return publicURLData.publicUrl || null;
-    });
-
-    const newPhotoUrls = (await Promise.all(uploadPromises)).filter(url => url !== null);
-
-    if (newPhotoUrls.length > 0) {
-        const updatedPhotos = [...(currentPhotos || []), ...newPhotoUrls]; // Combina las fotos
-        const { error: updateError } = await supabase
-            .from('profiles')
-            .update({ gallery_photos: updatedPhotos, updated_at: new Date().toISOString() })
-            .eq('id', currentUserId);
-
-        if (updateError) {
-            console.error('Error al actualizar galería en la BD:', updateError.message);
-            alert('Error al guardar las nuevas fotos: ' + updateError.message);
-        } else {
-            alert(`¡Se subieron ${newPhotoUrls.length} fotos a la galería!`);
-            galleryInput.value = ''; // Limpiar input de archivo
-            uploadGalleryBtn.style.display = 'none'; // Ocultar botón de subir
-            loadUserProfile(); // Recargar el perfil para mostrar las nuevas fotos
-        }
-    } else {
-        alert('No se pudo subir ninguna foto.');
+        const { data: { publicUrl } } = supabase.storage.from(GALLERY_BUCKET_NAME).getPublicUrl(filePath);
+        currentGallery.push(publicUrl);
     }
-
-    uploadGalleryBtn.disabled = false;
-    uploadGalleryBtn.textContent = 'Subir Nueva Foto';
-});
-
-async function getCurrentGalleryPhotos() {
+    
+    // Obtener la galería actual y añadir las nuevas fotos
     const { data: profile, error } = await supabase
         .from('profiles')
         .select('gallery_photos')
         .eq('id', currentUserId)
         .single();
-    return profile?.gallery_photos || [];
-}
+    
+    if (profile) {
+        const existingGallery = profile.gallery_photos || [];
+        const updatedGallery = [...existingGallery, ...currentGallery];
+        
+        // Actualizar la base de datos con el nuevo array de URLs
+        await supabase
+            .from('profiles')
+            .update({ gallery_photos: updatedGallery })
+            .eq('id', currentUserId);
+        
+        loadUserProfile(); // Recargar el perfil para ver la galería actualizada
+    }
+});
 
-async function deleteGalleryPhoto(event) {
-    const button = event.currentTarget;
-    const photoUrlToDelete = button.dataset.url;
 
-    if (!confirm('¿Estás seguro de que quieres eliminar esta foto de tu galería?')) {
+// --- Manejo de la Publicación de Posts ---
+postContentInput.addEventListener('input', () => {
+    // Habilita el botón si hay contenido o una imagen
+    if (postContentInput.value.trim().length > 0 || postImageInput.files.length > 0) {
+        publishPostBtn.disabled = false;
+    } else {
+        publishPostBtn.disabled = true;
+    }
+});
+
+postImageInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            imagePreview.src = e.target.result;
+            imagePreviewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+        publishPostBtn.disabled = false;
+    } else {
+        imagePreviewContainer.style.display = 'none';
+        imagePreview.src = '#';
+        if (postContentInput.value.trim().length === 0) {
+            publishPostBtn.disabled = true;
+        }
+    }
+});
+
+publishPostBtn.addEventListener('click', async () => {
+    const postContent = postContentInput.value.trim();
+    const postImageFile = postImageInput.files[0];
+
+    if (!postContent && !postImageFile) {
+        alert('La publicación no puede estar vacía.');
         return;
     }
 
-    button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    publishPostBtn.disabled = true;
+    publishPostBtn.textContent = 'Publicando...';
 
-    const currentPhotos = await getCurrentGalleryPhotos();
-    const updatedPhotos = currentPhotos.filter(url => url !== photoUrlToDelete);
+    let mediaUrl = null;
 
-    const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ gallery_photos: updatedPhotos, updated_at: new Date().toISOString() })
-        .eq('id', currentUserId);
+    if (postImageFile) {
+        const fileName = `${Date.now()}-${postImageFile.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+        const filePath = `${currentUserId}/${fileName}`; // Subir a una subcarpeta del usuario
 
-    if (updateError) {
-        console.error('Error al eliminar foto de galería en BD:', updateError.message);
-        alert('Error al eliminar la foto: ' + updateError.message);
-    } else {
-        // También intenta eliminar del Storage para liberar espacio
-        const pathSegments = photoUrlToDelete.split('/');
-        const fileName = pathSegments.pop(); // Último segmento es el nombre del archivo
-        const folder = pathSegments.pop(); // Penúltimo segmento es la carpeta (ej. 'gallery')
-        const userIdFolder = pathSegments.pop(); // Antepenúltimo segmento es el ID del usuario
-
-        if (folder && userIdFolder && fileName) {
-            const storagePath = `${userIdFolder}/${folder}/${fileName}`;
-            const { error: storageError } = await supabase.storage
-                .from(SUPABASE_STORAGE_BUCKET)
-                .remove([storagePath]);
-
-            if (storageError) {
-                console.warn('Advertencia: No se pudo eliminar la foto del almacenamiento de Supabase:', storageError.message);
-            } else {
-                console.log('Foto eliminada del almacenamiento:', storagePath);
-            }
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from(POST_MEDIA_BUCKET_NAME)
+            .upload(filePath, postImageFile);
+            
+        if (uploadError) {
+            console.error('Error al subir la imagen:', uploadError.message);
+            alert('Error al subir la imagen.');
+            publishPostBtn.disabled = false;
+            publishPostBtn.textContent = 'Publicar';
+            return;
         }
-        alert('¡Foto eliminada de la galería!');
-        loadUserProfile(); // Recargar el perfil para actualizar la galería
+
+        const { data: { publicUrl } } = supabase.storage.from(POST_MEDIA_BUCKET_NAME).getPublicUrl(filePath);
+        mediaUrl = publicUrl;
     }
+
+    const { data, error } = await supabase
+        .from('posts')
+        .insert([{
+            user_id: currentUserId,
+            content: postContent,
+            media_url: mediaUrl
+        }]);
+
+    if (error) {
+        console.error('Error al crear la publicación:', error.message);
+        alert('Error al crear la publicación.');
+    } else {
+        console.log('Publicación creada con éxito.');
+        postContentInput.value = '';
+        postImageInput.value = '';
+        imagePreviewContainer.style.display = 'none';
+        loadUserPosts(); // Recargar el feed de publicaciones del usuario
+    }
+
+    publishPostBtn.disabled = false;
+    publishPostBtn.textContent = 'Publicar';
+});
+
+// --- Cargar las publicaciones del usuario actual ---
+async function loadUserPosts() {
+    if (!currentUserId) return;
+
+    userPostsFeed.innerHTML = '<p class="loading-message">Cargando publicaciones...</p>';
+
+    const { data: posts, error } = await supabase
+        .from('posts')
+        .select(`
+            *,
+            profiles(username, avatar_url)
+        `)
+        .eq('user_id', currentUserId)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error al cargar las publicaciones:', error.message);
+        userPostsFeed.innerHTML = '<p class="loading-message error">Error al cargar las publicaciones.</p>';
+        return;
+    }
+
+    if (posts.length === 0) {
+        userPostsFeed.innerHTML = '<p class="loading-message">Aún no has hecho publicaciones.</p>';
+        return;
+    }
+
+    userPostsFeed.innerHTML = '';
+    posts.forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('post-item');
+        postElement.innerHTML = `
+            <div class="post-header">
+                <img src="${post.profiles.avatar_url || 'https://via.placeholder.com/50'}" alt="Avatar" class="post-avatar">
+                <div class="post-user-info">
+                    <span class="post-username">${post.profiles.username}</span>
+                    <span class="post-timestamp">${new Date(post.created_at).toLocaleString()}</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>${post.content || ''}</p>
+                ${post.media_url ? `<img src="${post.media_url}" alt="Imagen de la publicación" style="max-width: 100%; height: auto; margin-top: 15px; border-radius: 8px;">` : ''}
+            </div>
+        `;
+        userPostsFeed.appendChild(postElement);
+    });
 }
 
+// --- Evento de Carga Inicial ---
+document.addEventListener('DOMContentLoaded', loadUserProfile);
 
-// --- Event Listeners Globales ---
+// --- Logout ---
 logoutButton.addEventListener('click', async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Error al cerrar sesión:', error.message);
-        alert('Hubo un error al cerrar sesión. Inténtalo de nuevo.');
+        alert('Error al cerrar sesión.');
     } else {
         window.location.href = 'index.html';
     }
 });
-
-// Iniciar la carga del perfil al cargar el DOM
-document.addEventListener('DOMContentLoaded', loadUserProfile);
